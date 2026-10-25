@@ -27,12 +27,27 @@ export const About: React.FC = () => {
           <div className="md:col-span-2 p-8 rounded-3xl glass-panel border border-white/10 hover:border-accent/30 transition-all duration-300 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl group-hover:bg-accent/10 transition-colors pointer-events-none" />
             
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-2xl bg-accent/10 border border-accent/20 text-accent">
-                <Smartphone className="w-6 h-6" />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-accent/40 shadow-[0_0_20px_rgba(0,245,212,0.25)] shrink-0 group">
+                <img
+                  src="/varshid-shekhat.jpg"
+                  alt="Varshid Shekhat"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded text-[10px] font-mono bg-black/80 border border-accent/30 text-accent font-bold">
+                  Varshid
+                </span>
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-white">Full-Lifecycle Mobile Mastery</h3>
+              
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-xl bg-accent/10 border border-accent/20 text-accent">
+                    <Smartphone className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono text-accent font-semibold tracking-wider uppercase">Senior Mobile &amp; AI Engineer</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white font-display">Full-Lifecycle Mobile Mastery</h3>
                 <p className="text-xs font-mono text-slate-400">Proof-of-Concept to Global App Store Release</p>
               </div>
             </div>
