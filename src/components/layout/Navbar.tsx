@@ -45,7 +45,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     <header
       className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#010000]/80 backdrop-blur-xl border-b border-white/10 py-3 sm:py-3.5 shadow-2xl shadow-black/60'
+          ? 'bg-[#010000]/70 backdrop-blur-2xl border-b border-white/10 py-3 sm:py-3.5 shadow-2xl shadow-black/70'
           : 'bg-transparent py-4 sm:py-6'
       }`}
     >
@@ -71,8 +71,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             </div>
           </a>
 
-          {/* Desktop Navigation Links (Floating Glass Pill) */}
-          <nav className="hidden md:flex items-center gap-1 px-4 py-1.5 rounded-full bg-surface/80 backdrop-blur-xl border border-white/10 shadow-inner">
+          {/* Desktop Navigation Links (Apple Glass Pill) */}
+          <nav className="hidden md:flex items-center gap-1 px-4 py-1.5 rounded-full apple-glass-pill">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace('#', '');
               return (
@@ -109,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white bg-[#ee4405] hover:bg-[#d93d04] shadow-sm transition-all duration-200 active:scale-95 group"
             >
               <span>Let's Talk</span>
-              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="w-3.5 h-3.5 arrow-slide-diagonal animate-arrow-diagonal" />
             </a>
           </div>
 
@@ -142,7 +142,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          <div className="relative z-50 md:hidden bg-surface/95 border border-white/10 backdrop-blur-2xl px-5 pt-4 pb-6 mx-4 mt-2 rounded-3xl shadow-2xl max-h-[calc(100vh-90px)] overflow-y-auto animate-in fade-in slide-in-from-top-3 duration-200">
+          <div className="relative z-50 md:hidden apple-glass-sheet px-5 pt-4 pb-6 mx-4 mt-2 rounded-3xl shadow-2xl max-h-[calc(100vh-90px)] overflow-y-auto animate-in fade-in slide-in-from-top-3 duration-200">
             <div className="space-y-1">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.replace('#', '');
@@ -179,10 +179,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
               <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold text-white bg-[#ee4405] hover:bg-[#d93d04] shadow-sm"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold text-white bg-[#ee4405] hover:bg-[#d93d04] shadow-sm group"
               >
                 <span>Let's Talk Together</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <ArrowUpRight className="w-4 h-4 arrow-slide-diagonal animate-arrow-diagonal" />
               </a>
             </div>
           </div>

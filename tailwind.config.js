@@ -19,12 +19,12 @@ export default {
         background: '#010000',
         'background-alt': '#090a0d',
         surface: {
-          DEFAULT: '#131516',
-          muted: '#0e1012',
-          card: '#131516',
-          hover: '#17191a',
-          border: 'rgba(255, 255, 255, 0.08)',
-          'border-focus': 'rgba(238, 68, 5, 0.45)',
+          DEFAULT: 'rgba(18, 20, 24, 0.72)',
+          muted: 'rgba(12, 14, 17, 0.65)',
+          card: 'rgba(22, 25, 30, 0.65)',
+          hover: 'rgba(28, 32, 38, 0.85)',
+          border: 'rgba(255, 255, 255, 0.12)',
+          'border-focus': 'rgba(238, 68, 5, 0.5)',
         },
         accent: {
           DEFAULT: '#ee4405', // Framer Flame Terracotta Orange

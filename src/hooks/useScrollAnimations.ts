@@ -1,19 +1,73 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Professional scroll animation hook inspired by The Goonies Webflow site.
- * Uses GSAP ScrollTrigger for cinematic reveal animations:
- * - Staggered fade-in + slide-up for child elements
- * - Parallax background shifts
- * - Scale-down reveal for images/cards
- * - Text line-by-line reveals
- * - Section header cinematic entrance
+ * Hook to provide silky-smooth 60/120fps scrolling using Lenis & GSAP ticker.
+ * Synchronizes ScrollTrigger seamlessly and handles anchor links with smooth deceleration.
  */
+export const useSmoothScroll = () => {
+  const lenisRef = useRef<Lenis | null>(null);
+
+  useEffect(() => {
+    // Respect reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
+      infinite: false,
+    });
+
+    lenisRef.current = lenis;
+
+    // Connect Lenis to ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // Drive Lenis via GSAP ticker for synchronized 60/120fps frames
+    const updateTicker = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
+
+    // Smooth scroll for anchor navigation links (#about, #contact, etc.)
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a[href^="#"]');
+      if (!target) return;
+      const href = target.getAttribute('href');
+      if (href && href.length > 1) {
+        const element = document.querySelector(href);
+        if (element) {
+          e.preventDefault();
+          lenis.scrollTo(element as HTMLElement, { offset: -70, duration: 1.2 });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+
+    return () => {
+      document.removeEventListener('click', handleAnchorClick);
+      gsap.ticker.remove(updateTicker);
+      lenis.destroy();
+      lenisRef.current = null;
+    };
+  }, []);
+
+  return lenisRef;
+};
 
 export type AnimationType =
   | 'fadeUp'
@@ -34,19 +88,12 @@ interface ScrollAnimationOptions {
   delay?: number;
   duration?: number;
   stagger?: number;
-  /** CSS selector for children to stagger (used with staggerChildren) */
   childSelector?: string;
-  /** ScrollTrigger start position (default: 'top 85%') */
   start?: string;
-  /** ScrollTrigger end position (default: 'bottom 20%') */
   end?: string;
-  /** Parallax movement distance in px (only for parallax type) */
   parallaxDistance?: number;
-  /** Whether to toggle class instead of gsap animation */
   toggleClass?: string;
-  /** Scrub intensity (true for 1:1 scroll link, number for smoothing) */
   scrub?: boolean | number;
-  /** Whether to use markers for debugging */
   markers?: boolean;
 }
 
@@ -56,12 +103,12 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
   const {
     type = 'fadeUp',
     delay = 0,
-    duration = 0.9,
-    stagger = 0.12,
+    duration = 0.75,
+    stagger = 0.08,
     childSelector,
-    start = 'top 85%',
+    start = 'top 88%',
     end = 'bottom 20%',
-    parallaxDistance = 60,
+    parallaxDistance = 50,
     scrub = false,
     markers = false,
   } = options;
@@ -75,14 +122,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'fadeUp': {
           gsap.fromTo(
             el,
-            { opacity: 0, y: 60, filter: 'blur(4px)' },
+            { opacity: 0, y: 35 },
             {
               opacity: 1,
               y: 0,
-              filter: 'blur(0px)',
               duration,
               delay,
-              ease: 'power3.out',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -97,13 +143,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'fadeDown': {
           gsap.fromTo(
             el,
-            { opacity: 0, y: -40 },
+            { opacity: 0, y: -30 },
             {
               opacity: 1,
               y: 0,
               duration,
               delay,
-              ease: 'power3.out',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -118,13 +164,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'fadeLeft': {
           gsap.fromTo(
             el,
-            { opacity: 0, x: -80 },
+            { opacity: 0, x: -45 },
             {
               opacity: 1,
               x: 0,
               duration,
               delay,
-              ease: 'power3.out',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -139,13 +185,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'fadeRight': {
           gsap.fromTo(
             el,
-            { opacity: 0, x: 80 },
+            { opacity: 0, x: 45 },
             {
               opacity: 1,
               x: 0,
               duration,
               delay,
-              ease: 'power3.out',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -160,14 +206,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'scaleIn': {
           gsap.fromTo(
             el,
-            { opacity: 0, scale: 0.85, filter: 'blur(6px)' },
+            { opacity: 0, scale: 0.94 },
             {
               opacity: 1,
               scale: 1,
-              filter: 'blur(0px)',
-              duration: duration * 1.1,
+              duration: duration * 1.05,
               delay,
-              ease: 'back.out(1.4)',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -182,14 +227,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'rotateIn': {
           gsap.fromTo(
             el,
-            { opacity: 0, rotateX: 15, y: 40, transformPerspective: 800 },
+            { opacity: 0, y: 30 },
             {
               opacity: 1,
-              rotateX: 0,
               y: 0,
               duration,
               delay,
-              ease: 'power3.out',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -209,15 +253,14 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
           if (children.length > 0) {
             gsap.fromTo(
               children,
-              { opacity: 0, y: 50, filter: 'blur(3px)' },
+              { opacity: 0, y: 30 },
               {
                 opacity: 1,
                 y: 0,
-                filter: 'blur(0px)',
                 duration: duration * 0.85,
                 stagger,
                 delay,
-                ease: 'power3.out',
+                ease: 'power2.out',
                 scrollTrigger: {
                   trigger: el,
                   start,
@@ -250,17 +293,15 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         }
 
         case 'revealText': {
-          // Split text lines and animate each with staggered reveals
           gsap.fromTo(
             el,
-            { opacity: 0, y: 30, clipPath: 'inset(0 0 100% 0)' },
+            { opacity: 0, y: 25 },
             {
               opacity: 1,
               y: 0,
-              clipPath: 'inset(0 0 0% 0)',
-              duration: duration * 1.2,
+              duration: duration * 1.1,
               delay,
-              ease: 'power4.out',
+              ease: 'power3.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -275,14 +316,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'slideInLeft': {
           gsap.fromTo(
             el,
-            { opacity: 0, x: -120, rotateY: 8 },
+            { opacity: 0, x: -60 },
             {
               opacity: 1,
               x: 0,
-              rotateY: 0,
               duration,
               delay,
-              ease: 'power3.out',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -297,14 +337,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'slideInRight': {
           gsap.fromTo(
             el,
-            { opacity: 0, x: 120, rotateY: -8 },
+            { opacity: 0, x: 60 },
             {
               opacity: 1,
               x: 0,
-              rotateY: 0,
               duration,
               delay,
-              ease: 'power3.out',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -319,12 +358,13 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
         case 'clipReveal': {
           gsap.fromTo(
             el,
-            { clipPath: 'inset(0 100% 0 0)' },
+            { opacity: 0, y: 30 },
             {
-              clipPath: 'inset(0 0% 0 0)',
-              duration: duration * 1.4,
+              opacity: 1,
+              y: 0,
+              duration,
               delay,
-              ease: 'power4.inOut',
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
                 start,
@@ -346,7 +386,6 @@ export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
 
 /**
  * Hook to animate multiple refs within a single section.
- * Useful for animating independent elements within the same section.
  */
 export const useSectionAnimations = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -357,41 +396,40 @@ export const useSectionAnimations = () => {
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      // Auto-animate elements with data-animate attribute
       const animElements = section.querySelectorAll('[data-animate]');
 
       animElements.forEach((el) => {
         const animType = (el as HTMLElement).dataset.animate || 'fadeUp';
         const animDelay = parseFloat((el as HTMLElement).dataset.animateDelay || '0');
-        const animDuration = parseFloat((el as HTMLElement).dataset.animateDuration || '0.9');
-        const animStagger = parseFloat((el as HTMLElement).dataset.animateStagger || '0.12');
-        const animStart = (el as HTMLElement).dataset.animateStart || 'top 85%';
+        const animDuration = parseFloat((el as HTMLElement).dataset.animateDuration || '0.75');
+        const animStagger = parseFloat((el as HTMLElement).dataset.animateStagger || '0.08');
+        const animStart = (el as HTMLElement).dataset.animateStart || 'top 88%';
 
         switch (animType) {
           case 'fadeUp':
-            gsap.fromTo(el, { opacity: 0, y: 60, filter: 'blur(4px)' }, {
-              opacity: 1, y: 0, filter: 'blur(0px)', duration: animDuration, delay: animDelay, ease: 'power3.out',
+            gsap.fromTo(el, { opacity: 0, y: 35 }, {
+              opacity: 1, y: 0, duration: animDuration, delay: animDelay, ease: 'power2.out',
               scrollTrigger: { trigger: el, start: animStart, toggleActions: 'play none none none' },
             });
             break;
 
           case 'fadeLeft':
-            gsap.fromTo(el, { opacity: 0, x: -80 }, {
-              opacity: 1, x: 0, duration: animDuration, delay: animDelay, ease: 'power3.out',
+            gsap.fromTo(el, { opacity: 0, x: -50 }, {
+              opacity: 1, x: 0, duration: animDuration, delay: animDelay, ease: 'power2.out',
               scrollTrigger: { trigger: el, start: animStart, toggleActions: 'play none none none' },
             });
             break;
 
           case 'fadeRight':
-            gsap.fromTo(el, { opacity: 0, x: 80 }, {
-              opacity: 1, x: 0, duration: animDuration, delay: animDelay, ease: 'power3.out',
+            gsap.fromTo(el, { opacity: 0, x: 50 }, {
+              opacity: 1, x: 0, duration: animDuration, delay: animDelay, ease: 'power2.out',
               scrollTrigger: { trigger: el, start: animStart, toggleActions: 'play none none none' },
             });
             break;
 
           case 'scaleIn':
-            gsap.fromTo(el, { opacity: 0, scale: 0.85, filter: 'blur(6px)' }, {
-              opacity: 1, scale: 1, filter: 'blur(0px)', duration: animDuration * 1.1, delay: animDelay, ease: 'back.out(1.4)',
+            gsap.fromTo(el, { opacity: 0, scale: 0.94 }, {
+              opacity: 1, scale: 1, duration: animDuration, delay: animDelay, ease: 'power2.out',
               scrollTrigger: { trigger: el, start: animStart, toggleActions: 'play none none none' },
             });
             break;
@@ -400,8 +438,8 @@ export const useSectionAnimations = () => {
             const childSel = (el as HTMLElement).dataset.animateChildren || ':scope > *';
             const children = el.querySelectorAll(childSel);
             if (children.length > 0) {
-              gsap.fromTo(children, { opacity: 0, y: 50, filter: 'blur(3px)' }, {
-                opacity: 1, y: 0, filter: 'blur(0px)', duration: animDuration * 0.85, stagger: animStagger, delay: animDelay, ease: 'power3.out',
+              gsap.fromTo(children, { opacity: 0, y: 30 }, {
+                opacity: 1, y: 0, duration: animDuration * 0.85, stagger: animStagger, delay: animDelay, ease: 'power2.out',
                 scrollTrigger: { trigger: el, start: animStart, toggleActions: 'play none none none' },
               });
             }
@@ -409,15 +447,15 @@ export const useSectionAnimations = () => {
           }
 
           case 'revealText':
-            gsap.fromTo(el, { opacity: 0, y: 30, clipPath: 'inset(0 0 100% 0)' }, {
-              opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: animDuration * 1.2, delay: animDelay, ease: 'power4.out',
+            gsap.fromTo(el, { opacity: 0, y: 25 }, {
+              opacity: 1, y: 0, duration: animDuration, delay: animDelay, ease: 'power3.out',
               scrollTrigger: { trigger: el, start: animStart, toggleActions: 'play none none none' },
             });
             break;
 
           case 'clipReveal':
-            gsap.fromTo(el, { clipPath: 'inset(0 100% 0 0)' }, {
-              clipPath: 'inset(0 0% 0 0)', duration: animDuration * 1.4, delay: animDelay, ease: 'power4.inOut',
+            gsap.fromTo(el, { opacity: 0, y: 30 }, {
+              opacity: 1, y: 0, duration: animDuration, delay: animDelay, ease: 'power2.out',
               scrollTrigger: { trigger: el, start: animStart, toggleActions: 'play none none none' },
             });
             break;
@@ -432,10 +470,8 @@ export const useSectionAnimations = () => {
 };
 
 /**
- * Hero section specific animations: 
- * - Parallax depth layers
- * - Title scale + opacity on scroll
- * - Staggered entrance on page load
+ * Hero section entrance animations:
+ * Smooth hardware-accelerated transforms, zero blur lag, instant snappy feel
  */
 export const useHeroAnimations = () => {
   const heroRef = useRef<HTMLElement>(null);
@@ -445,85 +481,71 @@ export const useHeroAnimations = () => {
     if (!hero) return;
 
     const ctx = gsap.context(() => {
-      // Initial entrance: stagger all hero content on page load
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
       // Status pill
       tl.fromTo(
         '[data-hero="pill"]',
-        { opacity: 0, y: 30, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.7 },
-        0.2
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        0.1
       );
 
-      // Main headline - word by word
+      // Main headline
       tl.fromTo(
         '[data-hero="title"]',
-        { opacity: 0, y: 50, filter: 'blur(8px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, ease: 'power4.out' },
-        0.4
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        0.25
       );
 
       // Subtitle
       tl.fromTo(
         '[data-hero="subtitle"]',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8 },
-        0.7
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7 },
+        0.45
       );
 
       // Summary text
       tl.fromTo(
         '[data-hero="summary"]',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.7 },
-        0.9
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        0.6
       );
 
-      // CTA buttons - stagger
+      // CTA buttons
       tl.fromTo(
         '[data-hero="cta"] > *',
-        { opacity: 0, y: 20, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1 },
-        1.0
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
+        0.7
       );
 
       // Quality pillars
       tl.fromTo(
         '[data-hero="pillars"] > *',
-        { opacity: 0, x: -15 },
-        { opacity: 1, x: 0, duration: 0.5, stagger: 0.08 },
-        1.2
+        { opacity: 0, x: -12 },
+        { opacity: 1, x: 0, duration: 0.45, stagger: 0.06 },
+        0.85
       );
 
-      // 3D Canvas container
+      // 3D Canvas / Visual container
       tl.fromTo(
         '[data-hero="canvas"]',
-        { opacity: 0, scale: 0.9, x: 60 },
-        { opacity: 1, scale: 1, x: 0, duration: 1.2, ease: 'power3.out' },
-        0.5
+        { opacity: 0, scale: 0.96 },
+        { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' },
+        0.35
       );
 
-      // Stats metrics - stagger from bottom
+      // Stats metrics
       tl.fromTo(
         '[data-hero="stats"] > *',
-        { opacity: 0, y: 40, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1, ease: 'back.out(1.2)' },
-        1.3
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
+        0.95
       );
-
-
-      // Parallax: Background glow moves slower
-      gsap.to('[data-hero="bg-glow"]', {
-        scrollTrigger: {
-          trigger: hero,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-        y: 100,
-        ease: 'none',
-      });
 
     }, hero);
 
@@ -535,7 +557,6 @@ export const useHeroAnimations = () => {
 
 /**
  * Section header animation: badge + title + description
- * with a cinematic staggered reveal
  */
 export const useSectionHeaderAnimation = () => {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -548,17 +569,16 @@ export const useSectionHeaderAnimation = () => {
       const children = el.children;
       gsap.fromTo(
         children,
-        { opacity: 0, y: 40, filter: 'blur(4px)' },
+        { opacity: 0, y: 24 },
         {
           opacity: 1,
           y: 0,
-          filter: 'blur(0px)',
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'power3.out',
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 88%',
+            start: 'top 90%',
             toggleActions: 'play none none none',
           },
         }
@@ -573,7 +593,6 @@ export const useSectionHeaderAnimation = () => {
 
 /**
  * Skill bar fill animation - animates width from 0 to actual value
- * on scroll into view.
  */
 export const useSkillBarAnimation = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -591,11 +610,11 @@ export const useSkillBarAnimation = () => {
           { width: '0%' },
           {
             width: targetWidth,
-            duration: 1.2,
+            duration: 1.1,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: bar,
-              start: 'top 90%',
+              start: 'top 92%',
               toggleActions: 'play none none none',
             },
           }
@@ -626,11 +645,11 @@ export const useCounterAnimation = () => {
         const obj = { val: 0 };
         gsap.to(obj, {
           val: endVal,
-          duration: 2,
+          duration: 1.8,
           ease: 'power2.out',
           scrollTrigger: {
             trigger: counter,
-            start: 'top 90%',
+            start: 'top 92%',
             toggleActions: 'play none none none',
           },
           onUpdate: () => {

@@ -16,16 +16,16 @@ export const About: React.FC = () => {
     if (!grid) return;
 
     const ctx = gsap.context(() => {
-      // Bio card (large) - slide in from left with 3D perspective
+      // Bio card (large) - slide in from left cleanly
       const bioCard = grid.querySelector('[data-about="bio"]');
       if (bioCard) {
         gsap.fromTo(
           bioCard,
-          { opacity: 0, x: -80, rotateY: 6, transformPerspective: 1000, filter: 'blur(4px)' },
+          { opacity: 0, x: -50 },
           {
-            opacity: 1, x: 0, rotateY: 0, filter: 'blur(0px)',
-            duration: 1, ease: 'power3.out',
-            scrollTrigger: { trigger: bioCard, start: 'top 85%', toggleActions: 'play none none none' },
+            opacity: 1, x: 0,
+            duration: 0.85, ease: 'power2.out',
+            scrollTrigger: { trigger: bioCard, start: 'top 88%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -35,11 +35,11 @@ export const About: React.FC = () => {
       if (locationCard) {
         gsap.fromTo(
           locationCard,
-          { opacity: 0, y: 60, scale: 0.92, filter: 'blur(4px)' },
+          { opacity: 0, y: 35, scale: 0.96 },
           {
-            opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
-            duration: 0.9, delay: 0.15, ease: 'power3.out',
-            scrollTrigger: { trigger: locationCard, start: 'top 85%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.8, delay: 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: locationCard, start: 'top 88%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -49,11 +49,11 @@ export const About: React.FC = () => {
       if (smallCards.length) {
         gsap.fromTo(
           smallCards,
-          { opacity: 0, y: 60, scale: 0.88, filter: 'blur(5px)' },
+          { opacity: 0, y: 35, scale: 0.95 },
           {
-            opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
-            duration: 0.85, stagger: 0.12, ease: 'back.out(1.2)',
-            scrollTrigger: { trigger: smallCards[0], start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.75, stagger: 0.08, ease: 'power2.out',
+            scrollTrigger: { trigger: smallCards[0], start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -114,7 +114,7 @@ export const About: React.FC = () => {
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 w-full min-w-0">
           
           {/* Bento Card 1: Core Summary & Bio */}
-          <div data-about="bio" className="md:col-span-2 p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300 relative overflow-hidden group w-full min-w-0" style={{ opacity: 0 }}>
+          <div data-about="bio" className="md:col-span-2 p-6 sm:p-8 rounded-3xl apple-glass relative overflow-hidden group w-full min-w-0">
             <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
             </div>
@@ -165,7 +165,7 @@ export const About: React.FC = () => {
           </div>
 
           {/* Bento Card 2: Location & Work Availability */}
-          <div data-about="location" className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300 flex flex-col justify-between" style={{ opacity: 0 }}>
+          <div data-about="location" className="p-6 sm:p-8 rounded-3xl apple-glass flex flex-col justify-between">
             <div className="space-y-4">
               <div className="p-3 w-fit rounded-2xl bg-white/[0.05] border border-white/10 text-white">
                 <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -196,7 +196,7 @@ export const About: React.FC = () => {
           </div>
 
           {/* Bento Card 3: Education & Foundation */}
-          <div data-about="card" className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300" style={{ opacity: 0 }}>
+          <div data-about="card" className="p-6 sm:p-8 rounded-3xl apple-glass">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2.5 sm:p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-white shrink-0">
                 <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -219,7 +219,7 @@ export const About: React.FC = () => {
           </div>
 
           {/* Bento Card 4: AI & Frontier Engineering */}
-          <div data-about="card" className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300" style={{ opacity: 0 }}>
+          <div data-about="card" className="p-6 sm:p-8 rounded-3xl apple-glass">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2.5 sm:p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-white shrink-0">
                 <Cpu className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -244,7 +244,7 @@ export const About: React.FC = () => {
           </div>
 
           {/* Bento Card 5: Engineering Principles */}
-          <div data-about="card" className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300" style={{ opacity: 0 }}>
+          <div data-about="card" className="p-6 sm:p-8 rounded-3xl apple-glass">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2.5 sm:p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-white shrink-0">
                 <Terminal className="w-5 h-5 sm:w-6 sm:h-6" />

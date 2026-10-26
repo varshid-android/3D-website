@@ -70,11 +70,11 @@ export const Projects: React.FC = () => {
       if (cards.length) {
         gsap.fromTo(
           cards,
-          { opacity: 0, y: 60, scale: 0.9, rotateX: 8, transformPerspective: 1000, filter: 'blur(4px)' },
+          { opacity: 0, y: 35, scale: 0.96 },
           {
-            opacity: 1, y: 0, scale: 1, rotateX: 0, filter: 'blur(0px)',
-            duration: 0.8, stagger: 0.12, ease: 'power3.out',
-            scrollTrigger: { trigger: grid, start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.7, stagger: 0.08, ease: 'power2.out',
+            scrollTrigger: { trigger: grid, start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -84,7 +84,7 @@ export const Projects: React.FC = () => {
   }, [filter]);
 
   return (
-    <section ref={sectionRef} id="projects" className="py-10 sm:py-12 lg:py-14 relative bg-[#010000] w-full max-w-full overflow-hidden">
+    <section ref={sectionRef} id="projects" className="py-10 sm:py-12 lg:py-14 relative bg-transparent w-full max-w-full overflow-hidden">
       {/* Background warm ambient glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-radial from-accent/10 via-orange-600/5 to-transparent blur-3xl pointer-events-none" />
@@ -116,9 +116,8 @@ export const Projects: React.FC = () => {
               className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 shrink-0 whitespace-nowrap ${
                 filter === cat
                   ? 'bg-white text-black shadow-xl shadow-white/10 font-bold'
-                  : 'bg-surface border border-white/10 text-slate-400 hover:text-white hover:bg-surface/80'
+                  : 'apple-glass-pill text-slate-300 hover:text-white'
               }`}
-              style={{ opacity: 0 }}
             >
               {cat}
             </button>
@@ -131,8 +130,7 @@ export const Projects: React.FC = () => {
             <div
               key={project.id}
               data-project="card"
-              className="rounded-3xl bg-surface border border-white/10 hover:border-white/20 p-6 sm:p-9 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/60 group w-full min-w-0 relative overflow-hidden"
-              style={{ opacity: 0 }}
+              className="rounded-3xl apple-glass p-6 sm:p-9 flex flex-col justify-between group w-full min-w-0 relative overflow-hidden"
             >
               <div className="w-full min-w-0">
                 {/* Card Top Meta */}
@@ -198,10 +196,10 @@ export const Projects: React.FC = () => {
                 <div className="flex items-center justify-between pt-1 w-full">
                   <button
                     onClick={() => setActiveProject(project)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-orange-400 active:scale-95 transition-all"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-orange-400 active:scale-95 transition-all group/btn"
                   >
                     <span>View Case Study</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="w-4 h-4 arrow-slide-diagonal group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 group-hover/btn:text-orange-400 transition-transform" />
                   </button>
 
                   {project.metrics && project.metrics[0] && (

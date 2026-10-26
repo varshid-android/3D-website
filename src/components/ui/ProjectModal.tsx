@@ -24,11 +24,11 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xl animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-3xl bg-surface border border-white/10 p-6 sm:p-8 shadow-2xl text-left"
+        className="relative w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-3xl apple-glass-sheet p-6 sm:p-8 text-left"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}

@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { Sparkles as SparklesIcon } from 'lucide-react';
 
 // 3D Spatial Hologram with Varshid's Real Photo
-function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: number }; isMobile: boolean }) {
+function PhotoHologram({ isMobile }: { isMobile: boolean }) {
   const cardGroupRef = useRef<THREE.Group>(null);
   const ringRef1 = useRef<THREE.Mesh>(null);
   const ringRef2 = useRef<THREE.Mesh>(null);
@@ -13,9 +13,11 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
   useFrame((state, delta) => {
     if (!cardGroupRef.current) return;
 
-    // Smooth 3D tilt tracking mouse
-    const targetRotY = (mousePos.x * Math.PI) / (isMobile ? 12 : 6);
-    const targetRotX = -(mousePos.y * Math.PI) / (isMobile ? 14 : 8);
+    // Smooth 3D tilt tracking pointer directly via R3F state.pointer (0 re-renders, silky 60-120fps)
+    const pointerX = state.pointer.x;
+    const pointerY = state.pointer.y;
+    const targetRotY = (pointerX * Math.PI) / (isMobile ? 12 : 6);
+    const targetRotX = -(pointerY * Math.PI) / (isMobile ? 14 : 8);
     
     cardGroupRef.current.rotation.y = THREE.MathUtils.damp(
       cardGroupRef.current.rotation.y,
@@ -108,14 +110,14 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
       {isMobile ? (
         <>
           <Html position={[0, 1.35, 0.35]} center distanceFactor={4.5}>
-            <div className="px-2.5 py-1 rounded-full glass-panel border border-white/10 bg-surface/95 text-white text-[10px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+            <div className="px-2.5 py-1 rounded-full apple-glass-pill text-white text-[10px] font-mono whitespace-nowrap shadow-md flex items-center gap-1.5 select-none pointer-events-none">
               <span className="w-1.5 h-1.5 rounded-full bg-[#ee4405]" />
               <span>React Native Lead</span>
             </div>
           </Html>
 
           <Html position={[0, -1.35, 0.35]} center distanceFactor={4.5}>
-            <div className="px-2.5 py-1 rounded-full glass-panel border border-white/10 bg-surface/95 text-slate-300 text-[10px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+            <div className="px-2.5 py-1 rounded-full apple-glass-pill text-slate-200 text-[10px] font-mono whitespace-nowrap shadow-md flex items-center gap-1.5 select-none pointer-events-none">
               <SparklesIcon className="w-3 h-3 text-amber-300" />
               <span>AI &amp; Mobile Architect</span>
             </div>
@@ -124,21 +126,21 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
       ) : (
         <>
           <Html position={[-1.15, 1.25, 0.35]} transform distanceFactor={3.5}>
-            <div className="px-3 py-1 rounded-full glass-panel border border-white/10 bg-surface/90 text-white text-[11px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+            <div className="px-3 py-1 rounded-full apple-glass-pill text-white text-[11px] font-mono whitespace-nowrap shadow-md flex items-center gap-1.5 select-none pointer-events-none">
               <span className="w-2 h-2 rounded-full bg-[#ee4405]" />
               <span>React Native Lead</span>
             </div>
           </Html>
 
           <Html position={[1.05, -1.15, 0.45]} transform distanceFactor={3.5}>
-            <div className="px-3 py-1 rounded-full glass-panel border border-white/10 bg-surface/90 text-slate-300 text-[11px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+            <div className="px-3 py-1 rounded-full apple-glass-pill text-slate-200 text-[11px] font-mono whitespace-nowrap shadow-md flex items-center gap-1.5 select-none pointer-events-none">
               <SparklesIcon className="w-3 h-3 text-amber-300" />
               <span>AI &amp; Mobile Architect</span>
             </div>
           </Html>
 
           <Html position={[-0.85, -1.25, 0.3]} transform distanceFactor={3.5}>
-            <div className="px-2.5 py-1 rounded-full glass-panel border border-white/10 bg-surface/90 text-slate-300 text-[10px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1 select-none pointer-events-none">
+            <div className="px-2.5 py-1 rounded-full apple-glass-pill text-slate-200 text-[10px] font-mono whitespace-nowrap shadow-md flex items-center gap-1 select-none pointer-events-none">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>6+ Years Exp</span>
             </div>
@@ -179,7 +181,6 @@ function HologramCore() {
 }
 
 export const HeroScene: React.FC = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -190,22 +191,6 @@ export const HeroScene: React.FC = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      setMousePos({
-        x: Math.max(-1, Math.min(1, x)),
-        y: Math.max(-1, Math.min(1, y)),
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   return (
@@ -229,7 +214,7 @@ export const HeroScene: React.FC = () => {
         <spotLight position={[0, 6, 3]} angle={0.6} penumbra={1} intensity={2} color="#ee4405" />
 
         <Suspense fallback={<HologramCore />}>
-          <PhotoHologram mousePos={mousePos} isMobile={isMobile} />
+          <PhotoHologram isMobile={isMobile} />
         </Suspense>
 
         <ContactShadows
@@ -252,7 +237,7 @@ export const HeroScene: React.FC = () => {
       </Canvas>
 
       {/* Floating 3D Badge Indicator */}
-      <div className="absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 px-2.5 sm:px-3 py-1 rounded-full glass-panel border border-white/10 text-[9px] sm:text-[11px] font-mono text-slate-300 flex items-center gap-1.5 sm:gap-2 pointer-events-none whitespace-nowrap z-20">
+      <div className="absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 px-2.5 sm:px-3 py-1 rounded-full apple-glass-pill text-[9px] sm:text-[11px] font-mono text-slate-300 flex items-center gap-1.5 sm:gap-2 pointer-events-none whitespace-nowrap z-20">
         <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-[#ee4405] animate-pulse shrink-0" />
         <span className="hidden xs:inline">3D Spatial Viewport • </span>
         <span>Interactive Tilt</span>

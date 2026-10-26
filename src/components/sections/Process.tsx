@@ -74,7 +74,7 @@ export const Process: React.FC = () => {
   };
 
   return (
-    <section ref={sectionRef} id="process" className="py-10 sm:py-12 lg:py-14 relative bg-[#010000] w-full max-w-full overflow-hidden">
+    <section ref={sectionRef} id="process" className="py-10 sm:py-12 lg:py-14 relative bg-transparent w-full max-w-full overflow-hidden">
       {/* Background warm flame glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl pointer-events-none" />
@@ -101,7 +101,7 @@ export const Process: React.FC = () => {
           {PROCESS_STEPS.map((step) => (
             <div
               key={step.number}
-              className="p-7 sm:p-9 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
+              className="p-7 sm:p-9 rounded-3xl apple-glass flex flex-col justify-between group relative overflow-hidden"
             >
               <div className="space-y-5">
                 {/* Step Number & Badge */}
@@ -158,7 +158,7 @@ export const Process: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl sm:rounded-3xl bg-surface border border-white/10 overflow-hidden transition-all duration-300"
+                  className="rounded-2xl sm:rounded-3xl apple-glass overflow-hidden transition-all duration-300"
                 >
                   <button
                     onClick={() => toggleFaq(idx)}

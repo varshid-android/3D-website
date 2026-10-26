@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, ArrowUpRight, MapPin, CheckCircle2, ShieldCheck, Terminal, Box, UserCheck } from 'lucide-react';
+import { Download, ArrowUpRight, ArrowDown, MapPin, CheckCircle2, ShieldCheck, Terminal, Box, UserCheck } from 'lucide-react';
 import { PERSONAL_INFO, STATS } from '../../data/portfolioData';
 import { HeroScene } from '../three/HeroScene';
 import { useHeroAnimations } from '../../hooks/useScrollAnimations';
@@ -22,7 +22,7 @@ export const Hero: React.FC = () => {
           {/* Left Column: Core Message & Introduction */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-7 text-left w-full min-w-0">
             {/* Status Pill Tag */}
-            <div data-hero="pill" className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300 shadow-sm max-w-full" style={{ opacity: 0 }}>
+            <div data-hero="pill" className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full apple-glass-pill text-xs font-mono text-slate-300 max-w-full">
               <span className="w-2 h-2 rounded-full bg-[#ee4405] animate-pulse shrink-0" />
               <span className="text-white font-medium">✦ Mobile Architect &amp; AI Engineer</span>
               <span className="text-slate-600 hidden xs:inline">•</span>
@@ -34,18 +34,18 @@ export const Hero: React.FC = () => {
 
             {/* Main Editorial Headline */}
             <div className="space-y-4 w-full">
-              <h1 data-hero="title" className="text-4xl xs:text-5xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] break-words" style={{ opacity: 0 }}>
+              <h1 data-hero="title" className="text-4xl xs:text-5xl sm:text-6xl lg:text-[68px] font-bold tracking-tight text-white leading-[1.08] break-words">
                 Hi, I'm Varshid.<br />
                 Building High-Performance<br />
                 <span className="font-serif italic font-normal text-white">Mobile &amp; AI Systems</span>
               </h1>
-              <p data-hero="subtitle" className="text-base sm:text-xl font-normal text-slate-300 leading-relaxed max-w-2xl" style={{ opacity: 0 }}>
+              <p data-hero="subtitle" className="text-base sm:text-xl font-normal text-slate-300 leading-relaxed max-w-2xl">
                 Senior Mobile Software Engineer &amp; AI Solutions Engineer with <span className="text-white font-semibold">6+ years</span> delivering enterprise React Native ecosystems, native iOS/Android bridges, and autonomous AI workflows.
               </p>
             </div>
 
             {/* Quick summary snippet */}
-            <p data-hero="summary" className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl" style={{ opacity: 0 }}>
+            <p data-hero="summary" className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl">
               Specialized in guiding mission-critical client products from concept through global store launches, real-time SignalR architectures, automated Azure DevOps CI/CD pipelines, and frontier AI tools (RAG, MCP &amp; multi-agent systems).
             </p>
 
@@ -54,16 +54,14 @@ export const Hero: React.FC = () => {
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-full font-semibold text-xs sm:text-sm text-slate-950 bg-white hover:bg-slate-200 transition-all duration-200 shadow-xl shadow-white/10 active:scale-95 group"
-                style={{ opacity: 0 }}
               >
                 <span>Let's Build Together</span>
-                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="w-4 h-4 arrow-slide-diagonal animate-arrow-diagonal" />
               </a>
 
               <a
                 href="#projects"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-semibold text-xs sm:text-sm text-white bg-surface border border-white/10 hover:border-white/20 hover:bg-surface/80 transition-all duration-200 active:scale-95"
-                style={{ opacity: 0 }}
               >
                 <span>Explore Projects</span>
               </a>
@@ -74,7 +72,6 @@ export const Hero: React.FC = () => {
                 rel="noopener noreferrer"
                 download
                 className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full font-medium text-xs sm:text-sm text-slate-400 hover:text-white transition-colors"
-                style={{ opacity: 0 }}
               >
                 <Download className="w-4 h-4 text-slate-300" />
                 <span>Download Resume</span>
@@ -83,15 +80,15 @@ export const Hero: React.FC = () => {
 
             {/* Key Quality Pillars */}
             <div data-hero="pillars" className="pt-2 flex flex-wrap items-center gap-3 sm:gap-5 text-[11px] sm:text-xs font-mono text-slate-400">
-              <div className="flex items-center gap-1.5" style={{ opacity: 0 }}>
+              <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>React Native &amp; Native Bridges</span>
               </div>
-              <div className="flex items-center gap-1.5" style={{ opacity: 0 }}>
+              <div className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 <span>Azure DevOps CI/CD</span>
               </div>
-              <div className="flex items-center gap-1.5" style={{ opacity: 0 }}>
+              <div className="flex items-center gap-1.5">
                 <Terminal className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 <span>FastAPI &amp; Agentic AI</span>
               </div>
@@ -100,15 +97,15 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Right Column: Hero Visual (Portrait Card with 3D Toggle) */}
-          <div data-hero="canvas" className="lg:col-span-5 relative flex items-center justify-center w-full min-w-0" style={{ opacity: 0 }}>
-            <div className="w-full max-w-[480px] lg:max-w-none relative rounded-3xl bg-surface border border-white/10 p-3 overflow-hidden shadow-2xl shadow-black/80 group">
+          <div data-hero="canvas" className="lg:col-span-5 relative flex items-center justify-center w-full min-w-0">
+            <div className="w-full max-w-[480px] lg:max-w-none relative rounded-3xl apple-glass p-3 overflow-hidden shadow-2xl shadow-black/80 group">
               
               {/* Warm Amber-Orange Ambient Corner Glow */}
               <div className="absolute -top-12 -right-12 w-48 h-48 bg-accent/20 rounded-full blur-2xl pointer-events-none" />
               <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-orange-600/15 rounded-full blur-2xl pointer-events-none" />
 
               {/* View Switcher Pill (Top Right) */}
-              <div className="absolute top-5 right-5 z-20 flex items-center gap-1 p-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10">
+              <div className="absolute top-5 right-5 z-20 flex items-center gap-1 p-1 rounded-full apple-glass-pill">
                 <button
                   type="button"
                   onClick={() => setViewMode('portrait')}
@@ -182,8 +179,7 @@ export const Hero: React.FC = () => {
           {STATS.map((stat, idx) => (
             <div
               key={idx}
-              className="p-5 sm:p-6 rounded-3xl bg-surface border border-white/10 hover:border-white/20 hover:bg-white/[0.02] transition-all duration-300 group min-w-0"
-              style={{ opacity: 0 }}
+              className="p-5 sm:p-6 rounded-3xl apple-glass transition-all duration-300 group min-w-0"
             >
               <div className="text-3xl sm:text-5xl font-bold text-white font-display tracking-tight transition-colors">
                 {stat.value}
@@ -196,6 +192,22 @@ export const Hero: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Animated Scroll Down Indicator Arrow */}
+        <div className="flex justify-center pt-8 sm:pt-10">
+          <a
+            href="#about"
+            aria-label="Scroll to About section"
+            className="group flex flex-col items-center gap-2 text-slate-400 hover:text-white transition-colors cursor-pointer"
+          >
+            <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 group-hover:text-accent transition-colors">
+              Explore Portfolio
+            </span>
+            <div className="w-8 h-8 rounded-full border border-white/10 group-hover:border-accent/50 bg-white/[0.03] group-hover:bg-accent/10 flex items-center justify-center transition-all shadow-sm">
+              <ArrowDown className="w-4 h-4 text-slate-300 group-hover:text-accent animate-arrow-down-bounce transition-colors" />
+            </div>
+          </a>
         </div>
 
       </div>

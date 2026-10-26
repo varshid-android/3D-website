@@ -27,25 +27,25 @@ export const Experience: React.FC = () => {
       if (tabs.length) {
         gsap.fromTo(
           tabs,
-          { opacity: 0, x: -60, filter: 'blur(3px)' },
+          { opacity: 0, x: -40 },
           {
-            opacity: 1, x: 0, filter: 'blur(0px)',
-            duration: 0.7, stagger: 0.1, ease: 'power3.out',
-            scrollTrigger: { trigger: tabs[0], start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, x: 0,
+            duration: 0.7, stagger: 0.08, ease: 'power2.out',
+            scrollTrigger: { trigger: tabs[0], start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       }
 
-      // Detail panel - slide-in from right with perspective
+      // Detail panel - slide-in from right
       const panel = section.querySelector('[data-exp="panel"]');
       if (panel) {
         gsap.fromTo(
           panel,
-          { opacity: 0, x: 80, rotateY: -5, transformPerspective: 1200, filter: 'blur(4px)' },
+          { opacity: 0, x: 45 },
           {
-            opacity: 1, x: 0, rotateY: 0, filter: 'blur(0px)',
-            duration: 1, delay: 0.2, ease: 'power3.out',
-            scrollTrigger: { trigger: panel, start: 'top 85%', toggleActions: 'play none none none' },
+            opacity: 1, x: 0,
+            duration: 0.8, delay: 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: panel, start: 'top 88%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -64,14 +64,14 @@ export const Experience: React.FC = () => {
     tl.fromTo(
       panel.children,
       { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: 'power2.out' }
+      { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' }
     );
 
     return () => { tl.kill(); };
   }, [selectedExpId]);
 
   return (
-    <section ref={sectionRef} id="experience" className="py-10 sm:py-12 lg:py-14 relative bg-[#010000] w-full max-w-full overflow-hidden">
+    <section ref={sectionRef} id="experience" className="py-10 sm:py-12 lg:py-14 relative bg-transparent w-full max-w-full overflow-hidden">
       {/* Background warm ambient lighting */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
@@ -111,12 +111,11 @@ export const Experience: React.FC = () => {
                     key={exp.id}
                     data-exp="tab"
                     onClick={() => setSelectedExpId(exp.id)}
-                    className={`text-left p-4 sm:p-5 rounded-3xl transition-all duration-200 flex items-center justify-between border shrink-0 min-w-[200px] sm:min-w-[220px] lg:min-w-0 lg:w-full ${
+                    className={`text-left p-4 sm:p-5 rounded-3xl transition-all duration-200 flex items-center justify-between shrink-0 min-w-[200px] sm:min-w-[220px] lg:min-w-0 lg:w-full ${
                       isSelected
-                        ? 'bg-surface border-white/30 shadow-md lg:translate-x-1'
-                        : 'bg-surface/50 border-white/10 hover:border-white/20 hover:bg-surface'
+                        ? 'apple-glass lg:translate-x-1'
+                        : 'apple-glass-pill text-slate-300 hover:text-white'
                     }`}
-                    style={{ opacity: 0 }}
                   >
                     <div className="space-y-1 min-w-0">
                       <div className="flex items-center gap-2">
@@ -138,7 +137,7 @@ export const Experience: React.FC = () => {
                       </div>
                     </div>
 
-                    <ChevronRight className={`w-4 h-4 hidden lg:block transition-transform ${isSelected ? 'text-white translate-x-1' : 'text-slate-600'}`} />
+                    <ChevronRight className={`w-4 h-4 hidden lg:block transition-all ${isSelected ? 'text-[#ee4405] animate-arrow-right-pulse' : 'text-slate-600'}`} />
                   </button>
                 );
               })}
@@ -146,7 +145,7 @@ export const Experience: React.FC = () => {
           </div>
 
           {/* Active Experience Detailed Panel (Right) */}
-          <div data-exp="panel" className="lg:col-span-8 p-6 sm:p-9 rounded-3xl bg-surface border border-white/10 shadow-2xl relative w-full min-w-0" style={{ opacity: 0 }}>
+          <div data-exp="panel" className="lg:col-span-8 p-6 sm:p-9 rounded-3xl apple-glass relative w-full min-w-0">
             <div ref={panelRef}>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-white/10 w-full min-w-0">
                 <div className="space-y-1 min-w-0">

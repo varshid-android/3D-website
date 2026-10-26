@@ -55,11 +55,11 @@ export const Contact: React.FC = () => {
       if (leftCards.length) {
         gsap.fromTo(
           leftCards,
-          { opacity: 0, x: -60, filter: 'blur(3px)' },
+          { opacity: 0, x: -35 },
           {
-            opacity: 1, x: 0, filter: 'blur(0px)',
-            duration: 0.7, stagger: 0.1, ease: 'power3.out',
-            scrollTrigger: { trigger: leftCards[0], start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, x: 0,
+            duration: 0.7, stagger: 0.08, ease: 'power2.out',
+            scrollTrigger: { trigger: leftCards[0], start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -69,11 +69,11 @@ export const Contact: React.FC = () => {
       if (statusCard) {
         gsap.fromTo(
           statusCard,
-          { opacity: 0, scale: 0.9, y: 30, filter: 'blur(5px)' },
+          { opacity: 0, scale: 0.95, y: 20 },
           {
-            opacity: 1, scale: 1, y: 0, filter: 'blur(0px)',
-            duration: 0.9, ease: 'back.out(1.3)',
-            scrollTrigger: { trigger: statusCard, start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, scale: 1, y: 0,
+            duration: 0.75, ease: 'back.out(1.2)',
+            scrollTrigger: { trigger: statusCard, start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -83,11 +83,11 @@ export const Contact: React.FC = () => {
       if (formPanel) {
         gsap.fromTo(
           formPanel,
-          { opacity: 0, x: 80, rotateY: -4, transformPerspective: 1200, filter: 'blur(4px)' },
+          { opacity: 0, x: 40 },
           {
-            opacity: 1, x: 0, rotateY: 0, filter: 'blur(0px)',
-            duration: 1, delay: 0.15, ease: 'power3.out',
-            scrollTrigger: { trigger: formPanel, start: 'top 85%', toggleActions: 'play none none none' },
+            opacity: 1, x: 0,
+            duration: 0.8, delay: 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: formPanel, start: 'top 88%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -97,24 +97,24 @@ export const Contact: React.FC = () => {
       if (formFields.length) {
         gsap.fromTo(
           formFields,
-          { opacity: 0, y: 25 },
+          { opacity: 0, y: 20 },
           {
             opacity: 1, y: 0,
-            duration: 0.5, stagger: 0.08, delay: 0.4, ease: 'power2.out',
-            scrollTrigger: { trigger: formFields[0], start: 'top 90%', toggleActions: 'play none none none' },
+            duration: 0.45, stagger: 0.06, delay: 0.2, ease: 'power2.out',
+            scrollTrigger: { trigger: formFields[0], start: 'top 92%', toggleActions: 'play none none none' },
           }
         );
       }
 
-      // Resume download - clip reveal
+      // Resume download - smooth reveal
       const resumeBtn = section.querySelector('[data-contact="resume"]');
       if (resumeBtn) {
         gsap.fromTo(
           resumeBtn,
-          { opacity: 0, y: 20, clipPath: 'inset(0 50% 0 50% round 16px)' },
+          { opacity: 0, y: 15 },
           {
-            opacity: 1, y: 0, clipPath: 'inset(0 0% 0 0% round 16px)',
-            duration: 0.8, delay: 0.5, ease: 'power3.out',
+            opacity: 1, y: 0,
+            duration: 0.6, delay: 0.3, ease: 'power2.out',
             scrollTrigger: { trigger: resumeBtn, start: 'top 92%', toggleActions: 'play none none none' },
           }
         );
@@ -125,7 +125,7 @@ export const Contact: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="contact" className="py-10 sm:py-12 lg:py-14 relative bg-[#010000] w-full max-w-full overflow-hidden">
+    <section ref={sectionRef} id="contact" className="py-10 sm:py-12 lg:py-14 relative bg-transparent w-full max-w-full overflow-hidden">
       {/* Ambient background glow (warm flame atmosphere) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-accent/10 blur-3xl pointer-events-none" />
@@ -155,7 +155,7 @@ export const Contact: React.FC = () => {
           <div className="lg:col-span-5 space-y-4 sm:space-y-6 w-full min-w-0">
             
             {/* Status card */}
-            <div data-contact="status" className="p-6 sm:p-7 rounded-3xl bg-surface border border-white/10 space-y-3" style={{ opacity: 0 }}>
+            <div data-contact="status" className="p-6 sm:p-7 rounded-3xl apple-glass space-y-3">
               <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-semibold">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>CURRENT AVAILABILITY</span>
@@ -169,7 +169,7 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Email Card with Quick Copy */}
-            <div data-contact="left-card" className="p-5 sm:p-6 rounded-3xl bg-surface border border-white/10 flex items-center justify-between gap-3 group hover:border-white/20 transition-all" style={{ opacity: 0 }}>
+            <div data-contact="left-card" className="p-5 sm:p-6 rounded-3xl apple-glass flex items-center justify-between gap-3 group">
               <div className="flex items-center gap-3.5 min-w-0">
                 <div className="p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-white shrink-0">
                   <Mail className="w-5 h-5 text-white" />
@@ -199,7 +199,7 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Phone Card */}
-            <div data-contact="left-card" className="p-5 sm:p-6 rounded-3xl bg-surface border border-white/10 flex items-center justify-between gap-3 group hover:border-white/20 transition-all" style={{ opacity: 0 }}>
+            <div data-contact="left-card" className="p-5 sm:p-6 rounded-3xl apple-glass flex items-center justify-between gap-3 group">
               <div className="flex items-center gap-3.5 min-w-0">
                 <div className="p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-white shrink-0">
                   <Phone className="w-5 h-5 text-white" />
@@ -229,7 +229,7 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Location & Social Links */}
-            <div data-contact="left-card" className="p-5 sm:p-6 rounded-3xl bg-surface border border-white/10 space-y-4" style={{ opacity: 0 }}>
+            <div data-contact="left-card" className="p-5 sm:p-6 rounded-3xl apple-glass space-y-4">
               <div className="flex items-center gap-3.5">
                 <div className="p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-white shrink-0">
                   <MapPin className="w-5 h-5 text-white" />
@@ -272,8 +272,7 @@ export const Contact: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               download
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-surface border border-white/15 hover:border-white/30 text-slate-200 hover:text-white font-semibold text-xs sm:text-sm transition-all group active:scale-95"
-              style={{ opacity: 0 }}
+              className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full apple-glass-pill text-slate-200 hover:text-white font-semibold text-xs sm:text-sm transition-all group active:scale-95"
             >
               <Download className="w-4 h-4 text-white group-hover:-translate-y-0.5 transition-transform shrink-0" />
               <span>Download Official Resume PDF</span>
@@ -281,8 +280,8 @@ export const Contact: React.FC = () => {
 
           </div>
 
-          {/* Right Column: Interactive Inquiry Form (Framer Style) */}
-          <div data-contact="form" className="lg:col-span-7 p-6 sm:p-9 rounded-3xl bg-surface border border-white/10 shadow-2xl relative w-full min-w-0 overflow-hidden" style={{ opacity: 0 }}>
+          {/* Right Column: Interactive Inquiry Form (Apple Glass Sheet) */}
+          <div data-contact="form" className="lg:col-span-7 p-6 sm:p-9 rounded-3xl apple-glass-sheet relative w-full min-w-0 overflow-hidden">
             <h3 data-contact="field" className="text-xl sm:text-2xl font-bold text-white font-display mb-1.5 sm:mb-2" style={{ opacity: 0 }}>
               Send a Direct Message
             </h3>

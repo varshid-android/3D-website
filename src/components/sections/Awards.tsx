@@ -48,14 +48,14 @@ export const Awards: React.FC = () => {
       // Award cards - alternating left/right slide-in
       const cards = section.querySelectorAll('[data-award="card"]');
       cards.forEach((card, idx) => {
-        const fromX = idx % 2 === 0 ? -80 : 80;
+        const fromX = idx % 2 === 0 ? -40 : 40;
         gsap.fromTo(
           card,
-          { opacity: 0, x: fromX, rotateY: idx % 2 === 0 ? 6 : -6, transformPerspective: 1000, filter: 'blur(4px)' },
+          { opacity: 0, x: fromX },
           {
-            opacity: 1, x: 0, rotateY: 0, filter: 'blur(0px)',
-            duration: 0.9, delay: idx * 0.15, ease: 'power3.out',
-            scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, x: 0,
+            duration: 0.75, delay: idx * 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       });
@@ -65,25 +65,25 @@ export const Awards: React.FC = () => {
       icons.forEach((icon, idx) => {
         gsap.fromTo(
           icon,
-          { scale: 0, rotation: -30 },
+          { scale: 0.5, opacity: 0 },
           {
-            scale: 1, rotation: 0,
-            duration: 0.6, delay: 0.3 + idx * 0.15, ease: 'back.out(2)',
-            scrollTrigger: { trigger: icon, start: 'top 90%', toggleActions: 'play none none none' },
+            scale: 1, opacity: 1,
+            duration: 0.5, delay: 0.2 + idx * 0.1, ease: 'back.out(1.5)',
+            scrollTrigger: { trigger: icon, start: 'top 92%', toggleActions: 'play none none none' },
           }
         );
       });
 
-      // Education banner - slide up with clip reveal
+      // Education banner - slide up cleanly
       const eduBanner = section.querySelector('[data-award="edu"]');
       if (eduBanner) {
         gsap.fromTo(
           eduBanner,
-          { opacity: 0, y: 50, clipPath: 'inset(10% 5% 10% 5% round 24px)', filter: 'blur(4px)' },
+          { opacity: 0, y: 35 },
           {
-            opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0% round 24px)', filter: 'blur(0px)',
-            duration: 1, ease: 'power3.out',
-            scrollTrigger: { trigger: eduBanner, start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0,
+            duration: 0.8, ease: 'power2.out',
+            scrollTrigger: { trigger: eduBanner, start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -121,8 +121,7 @@ export const Awards: React.FC = () => {
               <div
                 key={award.id}
                 data-award="card"
-                className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300 relative overflow-hidden group w-full min-w-0 flex flex-col justify-between"
-                style={{ opacity: 0 }}
+                className="p-6 sm:p-8 rounded-3xl apple-glass relative overflow-hidden group w-full min-w-0 flex flex-col justify-between"
               >
                 {/* Background ambient radial glow */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
@@ -302,7 +301,7 @@ export const Awards: React.FC = () => {
         </div>
 
         {/* Academic Degree Highlight Banner */}
-        <div data-award="edu" className="p-5 sm:p-8 rounded-3xl glass-panel border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 hover:border-white/20 transition-all w-full min-w-0" style={{ opacity: 0 }}>
+        <div data-award="edu" className="p-5 sm:p-8 rounded-3xl apple-glass flex flex-col md:flex-row items-start md:items-center justify-between gap-5 w-full min-w-0">
           <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 min-w-0">
             <div className="p-3 sm:p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 shrink-0">
               <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8" />
@@ -329,7 +328,7 @@ export const Awards: React.FC = () => {
           onClick={() => setLightboxData(null)}
         >
           <div
-            className="relative w-full max-w-3xl my-auto rounded-2xl sm:rounded-3xl glass-panel border border-amber-400/30 bg-[#0a0e1a]/98 backdrop-blur-2xl p-4 sm:p-6 shadow-2xl text-left flex flex-col"
+            className="relative w-full max-w-3xl my-auto rounded-2xl sm:rounded-3xl apple-glass-sheet p-4 sm:p-6 text-left flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Close Button */}

@@ -9,30 +9,36 @@ import { Projects } from './components/sections/Projects';
 import { Awards } from './components/sections/Awards';
 import { Process } from './components/sections/Process';
 import { Contact } from './components/sections/Contact';
+import { LiveBackground } from './components/ui/LiveBackground';
+import { useSmoothScroll } from './hooks/useScrollAnimations';
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('home');
+  // Initialize Lenis smooth scroller synced with GSAP
+  useSmoothScroll();
 
   useEffect(() => {
     const sectionIds = ['home', 'about', 'experience', 'skills', 'projects', 'process', 'awards', 'contact'];
-    
-    const handleScroll = () => {
-      // Force lock horizontal scroll
-      if (window.scrollX !== 0) {
-        window.scrollTo(0, window.scrollY);
-      }
+    let ticking = false;
 
-      const scrollPosition = window.scrollY + 250;
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(id);
-            break;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollPosition = window.scrollY + 250;
+          for (const id of sectionIds) {
+            const el = document.getElementById(id);
+            if (el) {
+              const top = el.offsetTop;
+              const height = el.offsetHeight;
+              if (scrollPosition >= top && scrollPosition < top + height) {
+                setActiveSection(id);
+                break;
+              }
+            }
           }
-        }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -41,8 +47,11 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#010000] text-slate-100 selection:bg-accent/30 selection:text-white relative bg-grid-pattern">
-      {/* Top ambient radial glow (warm flame atmosphere) */}
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden text-slate-100 selection:bg-accent/30 selection:text-white relative">
+      {/* Dynamic Interactive Live Background (Drifting Plasma, Constellation Particles & Cyber Grid) */}
+      <LiveBackground />
+
+      {/* Top ambient radial glow */}
       <div className="absolute inset-x-0 top-0 h-[600px] overflow-hidden pointer-events-none z-0">
         <div className="ambient-glow-top" />
       </div>

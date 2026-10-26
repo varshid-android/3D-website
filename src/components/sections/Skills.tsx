@@ -71,11 +71,11 @@ export const Skills: React.FC = () => {
       if (cardEls.length) {
         gsap.fromTo(
           cardEls,
-          { opacity: 0, y: 50, scale: 0.92, filter: 'blur(4px)' },
+          { opacity: 0, y: 30, scale: 0.96 },
           {
-            opacity: 1, y: 0, scale: 1, filter: 'blur(0px)',
-            duration: 0.7, stagger: 0.1, ease: 'power3.out',
-            scrollTrigger: { trigger: cards, start: 'top 88%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.65, stagger: 0.06, ease: 'power2.out',
+            scrollTrigger: { trigger: cards, start: 'top 90%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -127,9 +127,8 @@ export const Skills: React.FC = () => {
             className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 shrink-0 whitespace-nowrap ${
               selectedCategory === 'all'
                 ? 'bg-white text-black shadow-xl shadow-white/10 font-bold'
-                : 'bg-surface border border-white/10 text-slate-400 hover:text-white hover:bg-surface/80'
+                : 'apple-glass-pill text-slate-300 hover:text-white'
             }`}
-            style={{ opacity: 0 }}
           >
             All Specializations
           </button>
@@ -141,9 +140,8 @@ export const Skills: React.FC = () => {
               className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-2 shrink-0 whitespace-nowrap ${
                 selectedCategory === idx
                   ? 'bg-white text-black shadow-xl shadow-white/10 font-bold'
-                  : 'bg-surface border border-white/10 text-slate-400 hover:text-white hover:bg-surface/80'
+                  : 'apple-glass-pill text-slate-300 hover:text-white'
               }`}
-              style={{ opacity: 0 }}
             >
               <span>{cat.title.split('&')[0].trim()}</span>
             </button>
@@ -156,8 +154,7 @@ export const Skills: React.FC = () => {
             <div
               key={category.title}
               data-skill="card"
-              className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300 flex flex-col justify-between group w-full min-w-0 relative overflow-hidden"
-              style={{ opacity: 0 }}
+              className="p-6 sm:p-8 rounded-3xl apple-glass flex flex-col justify-between group w-full min-w-0 relative overflow-hidden"
             >
               <div>
                 <div className="flex items-center gap-3.5 mb-4">

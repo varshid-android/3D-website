@@ -23,11 +23,11 @@ export const Footer: React.FC = () => {
       if (columns.length) {
         gsap.fromTo(
           columns,
-          { opacity: 0, y: 40, filter: 'blur(3px)' },
+          { opacity: 0, y: 25 },
           {
-            opacity: 1, y: 0, filter: 'blur(0px)',
-            duration: 0.7, stagger: 0.12, ease: 'power3.out',
-            scrollTrigger: { trigger: footer, start: 'top 90%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0,
+            duration: 0.65, stagger: 0.08, ease: 'power2.out',
+            scrollTrigger: { trigger: footer, start: 'top 92%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -37,11 +37,11 @@ export const Footer: React.FC = () => {
       if (bottomBar) {
         gsap.fromTo(
           bottomBar,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 15 },
           {
             opacity: 1, y: 0,
-            duration: 0.6, delay: 0.4, ease: 'power2.out',
-            scrollTrigger: { trigger: bottomBar, start: 'top 95%', toggleActions: 'play none none none' },
+            duration: 0.55, delay: 0.25, ease: 'power2.out',
+            scrollTrigger: { trigger: bottomBar, start: 'top 96%', toggleActions: 'play none none none' },
           }
         );
       }
@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer ref={footerRef} className="relative border-t border-white/10 bg-[#010000] w-full max-w-full overflow-hidden">
+    <footer ref={footerRef} className="relative border-t border-white/10 bg-transparent w-full max-w-full overflow-hidden">
       {/* Ambient background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-40 bg-accent/5 blur-3xl pointer-events-none" />
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14 relative z-10 w-full min-w-0">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 pb-8 sm:pb-10 border-b border-white/10 w-full min-w-0">
           {/* Identity & Tagline */}
-          <div data-footer="col" className="sm:col-span-2 space-y-4" style={{ opacity: 0 }}>
+          <div data-footer="col" className="sm:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-surface border border-white/10 flex items-center justify-center font-display font-extrabold text-white text-sm shrink-0">
                 <span className="text-accent">V</span>S
@@ -79,7 +79,7 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Quick Navigation Links */}
-          <div data-footer="col" className="space-y-3" style={{ opacity: 0 }}>
+          <div data-footer="col" className="space-y-3">
             <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
               Navigation
             </h4>
@@ -123,7 +123,7 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Direct Social & Connect */}
-          <div data-footer="col" className="space-y-3" style={{ opacity: 0 }}>
+          <div data-footer="col" className="space-y-3">
             <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
               Connect
             </h4>
@@ -176,7 +176,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar & Copyright */}
-        <div data-footer="bottom" className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center sm:text-left" style={{ opacity: 0 }}>
+        <div data-footer="bottom" className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center sm:text-left">
           <p className="flex items-center gap-1.5">
             <span>© {new Date().getFullYear()} {PERSONAL_INFO.name}. Crafted with</span>
             <Heart className="w-3 h-3 text-rose-500 fill-rose-500 inline" />
@@ -189,7 +189,7 @@ export const Footer: React.FC = () => {
             aria-label="Scroll back to top"
           >
             <span>Back to top</span>
-            <ArrowUp className="w-3.5 h-3.5 text-slate-300 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUp className="w-3.5 h-3.5 text-slate-300 group-hover:text-accent animate-arrow-up-float transition-all" />
           </button>
         </div>
       </div>
