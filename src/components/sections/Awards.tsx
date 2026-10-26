@@ -93,24 +93,25 @@ export const Awards: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="awards" className="py-16 sm:py-20 lg:py-28 relative w-full max-w-full overflow-hidden">
+    <section ref={sectionRef} id="awards" className="py-10 sm:py-12 lg:py-14 relative w-full max-w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full min-w-0">
         
-        {/* Section Header */}
-        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-2.5 sm:space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border border-accent/30 text-xs font-mono text-accent">
-            <span>05 // Recognition &amp; Honors</span>
+        {/* Section Header (Framer Style) */}
+        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ee4405] shrink-0" />
+            <span>Recognition &amp; Honors</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Awards &amp; <span className="text-gradient-accent">Accreditation</span>
+          <h2 className="text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+            Awards &amp; <span className="font-serif italic font-normal text-white">accreditation</span>
           </h2>
-          <p className="text-slate-400 text-xs sm:text-base leading-relaxed">
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
             Verified accolades for peer collaboration, enterprise mobile delivery, and keynote speaking on frontier AI.
           </p>
         </div>
 
         {/* Awards & Recognition Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12 w-full min-w-0 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8 w-full min-w-0 items-stretch">
           {AWARDS.map((award) => {
             const hasImages = award.images && award.images.length > 0;
             const currentImgIdx = activeImageIndices[award.id] || 0;
@@ -120,13 +121,12 @@ export const Awards: React.FC = () => {
               <div
                 key={award.id}
                 data-award="card"
-                className="p-5 sm:p-8 rounded-3xl glass-panel border border-white/10 hover:border-amber-400/40 transition-all duration-300 relative overflow-hidden group w-full min-w-0 flex flex-col justify-between"
+                className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300 relative overflow-hidden group w-full min-w-0 flex flex-col justify-between"
                 style={{ opacity: 0 }}
               >
                 {/* Background ambient radial glow */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl group-hover:bg-amber-500/10 transition-colors" />
-                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
                 </div>
 
                 <div className="relative z-10 space-y-4 sm:space-y-5">
@@ -153,7 +153,7 @@ export const Awards: React.FC = () => {
                           {award.badgeText}
                         </span>
                         {award.project && (
-                          <div className="text-[11px] font-mono text-accent mt-1 flex items-center gap-1">
+                          <div className="text-[11px] font-mono text-slate-300 mt-1 flex items-center gap-1">
                             <span className="text-slate-500">Focus:</span>
                             <span className="font-semibold">{award.project}</span>
                           </div>
@@ -167,11 +167,11 @@ export const Awards: React.FC = () => {
                         href={award.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-accent/40 hover:text-accent hover:bg-white/10 transition-all duration-200"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-white/25 hover:text-white hover:bg-white/10 transition-all duration-200"
                         title="View official post on LinkedIn"
                       >
                         <span>{award.linkLabel || 'Verified Post'}</span>
-                        <ExternalLink className="w-3 h-3 text-accent shrink-0" />
+                        <ExternalLink className="w-3 h-3 text-slate-400 shrink-0" />
                       </a>
                     )}
                   </div>
@@ -185,7 +185,7 @@ export const Awards: React.FC = () => {
                       {award.issuer}
                     </div>
                     <div className="text-[11px] sm:text-xs font-mono text-slate-400 flex items-center gap-1.5 mt-1">
-                      <Calendar className="w-3.5 h-3.5 text-accent shrink-0" />
+                      <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                       <span>{award.date}</span>
                     </div>
                   </div>
@@ -264,7 +264,7 @@ export const Awards: React.FC = () => {
                     <div className="pt-1 space-y-1.5 border-t border-white/5">
                       {award.highlights.map((highlight, idx) => (
                         <div key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-accent mt-0.5 shrink-0" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" />
                           <span>{highlight}</span>
                         </div>
                       ))}
@@ -289,10 +289,10 @@ export const Awards: React.FC = () => {
                       href={award.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 glass-panel border border-white/15 hover:border-accent/40 hover:text-accent transition-all duration-200 ml-auto"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 glass-panel border border-white/15 hover:border-white/30 hover:text-white transition-all duration-200 ml-auto"
                     >
                       <span>LinkedIn Post</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-accent" />
+                      <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
                     </a>
                   )}
                 </div>
@@ -302,13 +302,13 @@ export const Awards: React.FC = () => {
         </div>
 
         {/* Academic Degree Highlight Banner */}
-        <div data-award="edu" className="p-5 sm:p-8 rounded-3xl glass-panel border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 hover:border-accent/30 transition-all w-full min-w-0" style={{ opacity: 0 }}>
+        <div data-award="edu" className="p-5 sm:p-8 rounded-3xl glass-panel border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 hover:border-white/20 transition-all w-full min-w-0" style={{ opacity: 0 }}>
           <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 min-w-0">
             <div className="p-3 sm:p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 shrink-0">
               <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
             <div className="space-y-0.5 min-w-0">
-              <span className="text-[11px] sm:text-xs font-mono text-accent">Academic Degree</span>
+              <span className="text-[11px] sm:text-xs font-mono text-slate-400">Academic Degree</span>
               <h4 className="text-base sm:text-xl font-bold text-white font-display truncate">{EDUCATION.degree}</h4>
               <p className="text-xs sm:text-sm text-slate-400 truncate">{EDUCATION.institution} • Graduated {EDUCATION.year}</p>
             </div>
@@ -378,7 +378,7 @@ export const Awards: React.FC = () => {
                   href={lightboxData.award.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-950 bg-gradient-to-r from-accent to-sky-400 hover:opacity-95 transition-opacity shrink-0"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-950 bg-white hover:bg-slate-200 transition-colors shrink-0"
                 >
                   <span>Open LinkedIn Post</span>
                   <ExternalLink className="w-3.5 h-3.5 text-slate-950" />

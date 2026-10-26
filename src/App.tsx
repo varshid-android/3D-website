@@ -7,13 +7,14 @@ import { Experience } from './components/sections/Experience';
 import { Skills } from './components/sections/Skills';
 import { Projects } from './components/sections/Projects';
 import { Awards } from './components/sections/Awards';
+import { Process } from './components/sections/Process';
 import { Contact } from './components/sections/Contact';
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('home');
 
   useEffect(() => {
-    const sectionIds = ['home', 'about', 'experience', 'skills', 'projects', 'awards', 'contact'];
+    const sectionIds = ['home', 'about', 'experience', 'skills', 'projects', 'process', 'awards', 'contact'];
     
     const handleScroll = () => {
       // Force lock horizontal scroll
@@ -40,9 +41,9 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#07090e] text-slate-100 selection:bg-accent/30 selection:text-white relative bg-grid-pattern">
-      {/* Top ambient radial glow (clipped strictly within container) */}
-      <div className="absolute inset-x-0 top-0 h-[500px] overflow-hidden pointer-events-none z-0">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#010000] text-slate-100 selection:bg-accent/30 selection:text-white relative bg-grid-pattern">
+      {/* Top ambient radial glow (warm flame atmosphere) */}
+      <div className="absolute inset-x-0 top-0 h-[600px] overflow-hidden pointer-events-none z-0">
         <div className="ambient-glow-top" />
       </div>
 
@@ -56,6 +57,7 @@ export const App: React.FC = () => {
         <Experience />
         <Skills />
         <Projects />
+        <Process />
         <Awards />
         <Contact />
       </main>

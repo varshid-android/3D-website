@@ -28,32 +28,32 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-2xl sm:rounded-3xl glass-panel border border-accent/30 bg-[#0a0e1a] p-5 sm:p-8 shadow-2xl text-left"
+        className="relative w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-3xl bg-surface border border-white/10 p-6 sm:p-8 shadow-2xl text-left"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 transition-colors z-10"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 transition-colors z-10"
           aria-label="Close modal"
         >
           <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {/* Modal Header */}
-        <div className="space-y-2 pr-8 sm:pr-10">
+        <div className="space-y-2.5 pr-8 sm:pr-10">
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span className="px-2.5 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-accent/15 border border-accent/30 text-accent">
+            <span className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-white/[0.06] border border-white/10 text-slate-200">
               {project.category}
             </span>
             {project.badge && (
-              <span className="px-2.5 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono bg-sky-500/15 border border-sky-500/30 text-sky-400">
+              <span className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono bg-white/5 border border-white/10 text-slate-300">
                 {project.badge}
               </span>
             )}
             <span className="text-[11px] sm:text-xs font-mono text-slate-400">• Role: {project.role}</span>
           </div>
-          <h3 className="text-xl sm:text-3xl font-extrabold text-white font-display">
+          <h3 className="text-xl sm:text-3xl font-bold text-white font-display">
             {project.title}
           </h3>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-medium">
@@ -79,7 +79,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           <ul className="space-y-2">
             {project.highlights.map((highlight, idx) => (
               <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
                 <span>{highlight}</span>
               </li>
             ))}
@@ -96,7 +96,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1.5">
               {project.metrics.map((metric, idx) => (
                 <div key={idx} className="text-center p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[11px] sm:text-xs font-mono font-semibold text-accent">{metric}</span>
+                  <span className="text-[11px] sm:text-xs font-mono font-semibold text-white">{metric}</span>
                 </div>
               ))}
             </div>
@@ -133,10 +133,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-200 bg-white/5 border border-white/10 hover:border-accent/40 hover:text-accent hover:bg-white/10 transition-all"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-200 bg-white/5 border border-white/10 hover:border-white/25 hover:text-white hover:bg-white/10 transition-all"
                 >
                   <span>{link.label}</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-accent" />
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
                 </a>
               ))}
             </div>

@@ -26,13 +26,13 @@ export const Projects: React.FC = () => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Mobile':
-        return <Smartphone className="w-4 h-4 text-accent" />;
+        return <Smartphone className="w-4 h-4 text-white" />;
       case 'Full-Stack':
-        return <Layers className="w-4 h-4 text-sky-400" />;
+        return <Layers className="w-4 h-4 text-white" />;
       case 'AI & Automation':
-        return <Cpu className="w-4 h-4 text-pink-400" />;
+        return <Cpu className="w-4 h-4 text-white" />;
       default:
-        return <ShieldCheck className="w-4 h-4 text-purple-400" />;
+        return <ShieldCheck className="w-4 h-4 text-white" />;
     }
   };
 
@@ -84,38 +84,39 @@ export const Projects: React.FC = () => {
   }, [filter]);
 
   return (
-    <section ref={sectionRef} id="projects" className="py-16 sm:py-20 lg:py-28 relative bg-[#07090e] w-full max-w-full overflow-hidden">
-      {/* Background ambient lighting (strictly clipped) */}
+    <section ref={sectionRef} id="projects" className="py-10 sm:py-12 lg:py-14 relative bg-[#010000] w-full max-w-full overflow-hidden">
+      {/* Background warm ambient glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 right-0 w-72 sm:w-80 h-72 sm:h-80 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-radial from-accent/10 via-orange-600/5 to-transparent blur-3xl pointer-events-none" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full min-w-0">
         
-        {/* Section Header */}
-        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-2.5 sm:space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border border-accent/30 text-xs font-mono text-accent">
-            <span>04 // Selected Works</span>
+        {/* Section Header (Framer Style) */}
+        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-6 sm:mb-8 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ee4405] shrink-0" />
+            <span>Selected Works</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Featured Projects &amp; <span className="text-gradient-accent">Case Studies</span>
+          <h2 className="text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+            My latest <span className="font-serif italic font-normal text-white">work</span>
           </h2>
-          <p className="text-slate-400 text-xs sm:text-base leading-relaxed">
-            A showcase of production mobile applications, scalable platforms, and frontier AI tools engineered from concept to deployment.
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+            A selection of production mobile applications, scalable platforms, and frontier AI tools engineered from proof-of-concept to global deployment.
           </p>
         </div>
 
-        {/* Filter Chips */}
-        <div className="w-full max-w-full overflow-x-auto flex gap-2 mb-8 sm:mb-12 no-scrollbar sm:flex-wrap sm:justify-center pb-2 touch-pan-x">
+        {/* Filter Chips (Pill Buttons) */}
+        <div className="w-full max-w-full overflow-x-auto flex gap-2 mb-6 sm:mb-8 no-scrollbar sm:flex-wrap sm:justify-center pb-1 touch-pan-x">
           {categories.map((cat) => (
             <button
               key={cat}
               data-project="chip"
               onClick={() => setFilter(cat)}
-              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 shrink-0 whitespace-nowrap ${
+              className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 shrink-0 whitespace-nowrap ${
                 filter === cat
-                  ? 'bg-accent text-slate-950 shadow-[0_0_15px_rgba(0,245,212,0.3)]'
-                  : 'glass-panel border border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-white text-black shadow-xl shadow-white/10 font-bold'
+                  : 'bg-surface border border-white/10 text-slate-400 hover:text-white hover:bg-surface/80'
               }`}
               style={{ opacity: 0 }}
             >
@@ -124,13 +125,13 @@ export const Projects: React.FC = () => {
           ))}
         </div>
 
-        {/* Projects Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 w-full min-w-0">
+        {/* Projects Grid (Bento Style Framer Cards) */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 w-full min-w-0">
           {filteredProjects.map((project) => (
             <div
               key={project.id}
               data-project="card"
-              className="rounded-3xl glass-panel border border-white/10 hover:border-accent/40 p-5 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent/5 group w-full min-w-0"
+              className="rounded-3xl bg-surface border border-white/10 hover:border-white/20 p-6 sm:p-9 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/60 group w-full min-w-0 relative overflow-hidden"
               style={{ opacity: 0 }}
             >
               <div className="w-full min-w-0">
@@ -146,14 +147,14 @@ export const Projects: React.FC = () => {
                   </div>
 
                   {project.badge && (
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono bg-accent/10 border border-accent/25 text-accent shrink-0">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono bg-white/[0.06] border border-white/10 text-slate-300 shrink-0">
                       {project.badge}
                     </span>
                   )}
                 </div>
 
                 {/* Project Title */}
-                <h3 className="text-lg sm:text-2xl font-bold text-white font-display group-hover:text-accent transition-colors">
+                <h3 className="text-lg sm:text-2xl font-bold text-white font-display transition-colors">
                   {project.title}
                 </h3>
                 <p className="text-[11px] sm:text-xs font-mono text-slate-400 mt-1 mb-2.5">
@@ -169,7 +170,7 @@ export const Projects: React.FC = () => {
                 <div className="space-y-2 mb-5 sm:mb-6 text-xs text-slate-300">
                   {project.highlights.slice(0, 3).map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-accent mt-0.5 shrink-0" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" />
                       <span className="line-clamp-2">{item}</span>
                     </div>
                   ))}
@@ -197,7 +198,7 @@ export const Projects: React.FC = () => {
                 <div className="flex items-center justify-between pt-1 w-full">
                   <button
                     onClick={() => setActiveProject(project)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline active:scale-95 transition-all"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-orange-400 active:scale-95 transition-all"
                   >
                     <span>View Case Study</span>
                     <ArrowUpRight className="w-4 h-4" />

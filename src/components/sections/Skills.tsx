@@ -16,19 +16,19 @@ export const Skills: React.FC = () => {
   const getIcon = (name: string) => {
     switch (name) {
       case 'Smartphone':
-        return <Smartphone className="w-5 h-5 text-accent" />;
+        return <Smartphone className="w-5 h-5 text-white" />;
       case 'Code2':
-        return <Code2 className="w-5 h-5 text-sky-400" />;
+        return <Code2 className="w-5 h-5 text-white" />;
       case 'Server':
-        return <Server className="w-5 h-5 text-emerald-400" />;
+        return <Server className="w-5 h-5 text-white" />;
       case 'Workflow':
-        return <Workflow className="w-5 h-5 text-purple-400" />;
+        return <Workflow className="w-5 h-5 text-white" />;
       case 'Cpu':
-        return <Cpu className="w-5 h-5 text-pink-400" />;
+        return <Cpu className="w-5 h-5 text-white" />;
       case 'Cloud':
-        return <Cloud className="w-5 h-5 text-amber-400" />;
+        return <Cloud className="w-5 h-5 text-white" />;
       default:
-        return <Sparkles className="w-5 h-5 text-accent" />;
+        return <Sparkles className="w-5 h-5 text-white" />;
     }
   };
 
@@ -102,45 +102,46 @@ export const Skills: React.FC = () => {
   }, [selectedCategory]);
 
   return (
-    <section ref={sectionRef} id="skills" className="py-16 sm:py-20 lg:py-28 relative w-full max-w-full overflow-hidden">
+    <section ref={sectionRef} id="skills" className="py-10 sm:py-12 lg:py-14 relative w-full max-w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full min-w-0">
         
-        {/* Section Header */}
-        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-2.5 sm:space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border border-accent/30 text-xs font-mono text-accent">
-            <span>03 // Core Competencies</span>
+        {/* Section Header (Framer Style) */}
+        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-6 sm:mb-8 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ee4405] shrink-0" />
+            <span>Services &amp; Capabilities</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Technical Stack &amp; <span className="text-gradient-accent">Specializations</span>
+          <h2 className="text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+            My <span className="font-serif italic font-normal text-white">services</span> &amp; specializations
           </h2>
-          <p className="text-slate-400 text-xs sm:text-base leading-relaxed">
-            Curated proficiency across modern mobile platforms, distributed backend microservices, and frontier AI architectures.
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+            Helping brands engineer modern, high-performing mobile apps and autonomous AI workflows with production reliability.
           </p>
         </div>
 
-        {/* Filter Category Chips: horizontal scroll on mobile */}
-        <div className="w-full max-w-full overflow-x-auto flex gap-2 mb-8 sm:mb-12 no-scrollbar sm:flex-wrap sm:justify-center pb-2 touch-pan-x">
+        {/* Filter Category Chips: pill style */}
+        <div className="w-full max-w-full overflow-x-auto flex gap-2 mb-6 sm:mb-8 no-scrollbar sm:flex-wrap sm:justify-center pb-1 touch-pan-x">
           <button
             data-skill="chip"
             onClick={() => setSelectedCategory('all')}
-            className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 shrink-0 whitespace-nowrap ${
+            className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 shrink-0 whitespace-nowrap ${
               selectedCategory === 'all'
-                ? 'bg-accent text-slate-950 shadow-[0_0_15px_rgba(0,245,212,0.3)]'
-                : 'glass-panel border border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
+                ? 'bg-white text-black shadow-xl shadow-white/10 font-bold'
+                : 'bg-surface border border-white/10 text-slate-400 hover:text-white hover:bg-surface/80'
             }`}
             style={{ opacity: 0 }}
           >
-            All Competencies
+            All Specializations
           </button>
           {SKILL_CATEGORIES.map((cat, idx) => (
             <button
               key={cat.title}
               data-skill="chip"
               onClick={() => setSelectedCategory(idx)}
-              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-2 shrink-0 whitespace-nowrap ${
+              className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-2 shrink-0 whitespace-nowrap ${
                 selectedCategory === idx
-                  ? 'bg-accent text-slate-950 shadow-[0_0_15px_rgba(0,245,212,0.3)]'
-                  : 'glass-panel border border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-white text-black shadow-xl shadow-white/10 font-bold'
+                  : 'bg-surface border border-white/10 text-slate-400 hover:text-white hover:bg-surface/80'
               }`}
               style={{ opacity: 0 }}
             >
@@ -150,17 +151,17 @@ export const Skills: React.FC = () => {
         </div>
 
         {/* Skill Category Cards Grid */}
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 w-full min-w-0">
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 w-full min-w-0">
           {categoriesToDisplay.map((category) => (
             <div
               key={category.title}
               data-skill="card"
-              className="p-5 sm:p-7 rounded-3xl glass-panel border border-white/10 hover:border-accent/30 transition-all duration-300 flex flex-col justify-between group w-full min-w-0"
+              className="p-6 sm:p-8 rounded-3xl bg-surface border border-white/10 hover:border-white/20 transition-all duration-300 flex flex-col justify-between group w-full min-w-0 relative overflow-hidden"
               style={{ opacity: 0 }}
             >
               <div>
-                <div className="flex items-center gap-3 mb-3.5 sm:mb-4">
-                  <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 shrink-0">
+                <div className="flex items-center gap-3.5 mb-4">
+                  <div className="p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-white shrink-0">
                     {getIcon(category.iconName)}
                   </div>
                   <h3 className="text-base sm:text-lg font-bold text-white font-display truncate">
@@ -168,30 +169,30 @@ export const Skills: React.FC = () => {
                   </h3>
                 </div>
 
-                <p className="text-xs text-slate-400 leading-relaxed mb-5 sm:mb-6">
+                <p className="text-xs text-slate-400 leading-relaxed mb-6">
                   {category.description}
                 </p>
 
                 {/* Individual Skills with meters */}
-                <div className="space-y-3.5 sm:space-y-4 w-full">
+                <div className="space-y-4 w-full">
                   {category.skills.map((skill) => (
                     <div key={skill.name} className="space-y-1.5 w-full">
                       <div className="flex items-center justify-between text-xs">
                         <span className={`font-medium truncate ${skill.highlight ? 'text-white font-semibold' : 'text-slate-300'}`}>
                           {skill.name}
                         </span>
-                        <span className="font-mono text-[11px] text-accent shrink-0 ml-2">
+                        <span className="font-mono text-[11px] text-slate-400 shrink-0 ml-2 font-medium">
                           {skill.level}%
                         </span>
                       </div>
-                      <div className="h-1.5 w-full bg-slate-800/80 rounded-full overflow-hidden">
+                      <div className="h-1.5 w-full bg-white/[0.06] rounded-full overflow-hidden">
                         <div
                           data-skill-bar
                           data-skill-width={`${skill.level}%`}
                           className={`h-full rounded-full transition-all duration-700 ${
                             skill.highlight
-                              ? 'bg-gradient-to-r from-accent to-sky-400 shadow-[0_0_8px_rgba(0,245,212,0.5)]'
-                              : 'bg-slate-500'
+                              ? 'bg-gradient-to-r from-orange-500 to-[#ee4405]'
+                              : 'bg-white/20'
                           }`}
                           style={{ width: `${skill.level}%` }}
                         />
@@ -202,10 +203,10 @@ export const Skills: React.FC = () => {
               </div>
 
               {/* Card Footer Badge */}
-              <div className="mt-5 sm:mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-slate-500 w-full">
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-slate-500 w-full">
                 <span>Production Verified</span>
-                <span className="text-accent flex items-center gap-1 shrink-0">
-                  <Check className="w-3 h-3 text-accent shrink-0" />
+                <span className="text-slate-300 flex items-center gap-1 shrink-0 font-medium">
+                  <Check className="w-3 h-3 text-emerald-400 shrink-0" />
                   Enterprise Ready
                 </span>
               </div>

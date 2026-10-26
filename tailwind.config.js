@@ -16,35 +16,35 @@ export default {
     },
     extend: {
       colors: {
-        background: '#07090e',
-        'background-alt': '#0c0f18',
+        background: '#010000',
+        'background-alt': '#090a0d',
         surface: {
-          DEFAULT: '#0f1422',
-          muted: '#0b0e17',
-          card: '#121829',
-          hover: '#182138',
+          DEFAULT: '#131516',
+          muted: '#0e1012',
+          card: '#131516',
+          hover: '#17191a',
           border: 'rgba(255, 255, 255, 0.08)',
-          'border-focus': 'rgba(0, 245, 212, 0.4)',
+          'border-focus': 'rgba(238, 68, 5, 0.45)',
         },
         accent: {
-          DEFAULT: '#00f5d4', // Cyber Cyan
-          hover: '#05e0c3',
-          secondary: '#38bdf8', // Electric Sky
-          purple: '#a855f7',
-          pink: '#f43f5e',
+          DEFAULT: '#ee4405', // Framer Flame Terracotta Orange
+          hover: '#d93d04',
+          light: '#f95d24',
+          secondary: '#d93d04',
           amber: '#fbbf24',
           emerald: '#10b981',
-          glow: 'rgba(0, 245, 212, 0.35)',
+          glow: 'rgba(238, 68, 5, 0.2)',
         },
       },
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Outfit', 'system-ui', 'sans-serif'],
+        serif: ['DM Serif Display', 'Georgia', 'serif'],
+        display: ['Plus Jakarta Sans', 'Outfit', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-glow': 'radial-gradient(circle at 50% 0%, rgba(0, 245, 212, 0.15) 0%, transparent 60%)',
+        'hero-glow': 'radial-gradient(circle at 50% 0%, rgba(238, 68, 5, 0.1) 0%, transparent 60%)',
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',

@@ -46,15 +46,15 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
   return (
     <group ref={cardGroupRef} position={[0, isMobile ? 0.1 : 0, 0]} scale={cardScale}>
       {/* Floating 3D Sparkle Dust */}
-      <Sparkles count={isMobile ? 20 : 45} scale={3.8} size={2.8} speed={0.5} color="#00f5d4" opacity={0.6} />
+      <Sparkles count={isMobile ? 20 : 45} scale={3.8} size={2.8} speed={0.5} color="#ee4405" opacity={0.6} />
 
       {/* Outer 3D Gyro Rings */}
       <mesh ref={ringRef1} scale={2.4}>
         <torusGeometry args={[1, 0.015, 16, 80]} />
         <meshStandardMaterial
-          color="#00f5d4"
+          color="#ee4405"
           wireframe={true}
-          emissive="#00f5d4"
+          emissive="#ee4405"
           emissiveIntensity={0.6}
           transparent
           opacity={0.4}
@@ -64,9 +64,9 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
       <mesh ref={ringRef2} scale={2.7}>
         <torusGeometry args={[1, 0.012, 16, 80]} />
         <meshStandardMaterial
-          color="#38bdf8"
+          color="#ff7a45"
           wireframe={true}
-          emissive="#38bdf8"
+          emissive="#ff7a45"
           emissiveIntensity={0.5}
           transparent
           opacity={0.3}
@@ -77,7 +77,7 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
       <mesh position={[0, 0, -0.05]}>
         <planeGeometry args={[2.3, 3.1]} />
         <meshPhysicalMaterial
-          color="#0d1424"
+          color="#131516"
           roughness={0.15}
           metalness={0.2}
           transmission={0.4}
@@ -90,7 +90,7 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
       {/* Glowing Border Frame */}
       <mesh position={[0, 0, -0.04]}>
         <ringGeometry args={[1.55, 1.6, 4]} />
-        <meshBasicMaterial color="#00f5d4" transparent opacity={0.3} wireframe />
+        <meshBasicMaterial color="#ee4405" transparent opacity={0.3} wireframe />
       </mesh>
 
       {/* Varshid's Real Portrait Texture with Smooth Beveled Mask */}
@@ -108,15 +108,15 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
       {isMobile ? (
         <>
           <Html position={[0, 1.35, 0.35]} center distanceFactor={4.5}>
-            <div className="px-2.5 py-1 rounded-full glass-panel border border-accent/40 bg-surface/95 text-accent text-[10px] font-mono whitespace-nowrap shadow-[0_0_15px_rgba(0,245,212,0.3)] flex items-center gap-1.5 select-none pointer-events-none">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
+            <div className="px-2.5 py-1 rounded-full glass-panel border border-white/10 bg-surface/95 text-white text-[10px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ee4405]" />
               <span>React Native Lead</span>
             </div>
           </Html>
 
           <Html position={[0, -1.35, 0.35]} center distanceFactor={4.5}>
-            <div className="px-2.5 py-1 rounded-full glass-panel border border-sky-400/40 bg-surface/95 text-sky-400 text-[10px] font-mono whitespace-nowrap shadow-[0_0_15px_rgba(56,189,248,0.3)] flex items-center gap-1.5 select-none pointer-events-none">
-              <SparklesIcon className="w-3 h-3 text-sky-400" />
+            <div className="px-2.5 py-1 rounded-full glass-panel border border-white/10 bg-surface/95 text-slate-300 text-[10px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+              <SparklesIcon className="w-3 h-3 text-amber-300" />
               <span>AI &amp; Mobile Architect</span>
             </div>
           </Html>
@@ -124,22 +124,23 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
       ) : (
         <>
           <Html position={[-1.15, 1.25, 0.35]} transform distanceFactor={3.5}>
-            <div className="px-3 py-1 rounded-full glass-panel border border-accent/40 bg-surface/90 text-accent text-[11px] font-mono whitespace-nowrap shadow-[0_0_15px_rgba(0,245,212,0.3)] flex items-center gap-1.5 select-none pointer-events-none">
-              <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+            <div className="px-3 py-1 rounded-full glass-panel border border-white/10 bg-surface/90 text-white text-[11px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+              <span className="w-2 h-2 rounded-full bg-[#ee4405]" />
               <span>React Native Lead</span>
             </div>
           </Html>
 
           <Html position={[1.05, -1.15, 0.45]} transform distanceFactor={3.5}>
-            <div className="px-3 py-1 rounded-full glass-panel border border-sky-400/40 bg-surface/90 text-sky-400 text-[11px] font-mono whitespace-nowrap shadow-[0_0_15px_rgba(56,189,248,0.3)] flex items-center gap-1.5 select-none pointer-events-none">
-              <SparklesIcon className="w-3 h-3 text-sky-400" />
+            <div className="px-3 py-1 rounded-full glass-panel border border-white/10 bg-surface/90 text-slate-300 text-[11px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1.5 select-none pointer-events-none">
+              <SparklesIcon className="w-3 h-3 text-amber-300" />
               <span>AI &amp; Mobile Architect</span>
             </div>
           </Html>
 
           <Html position={[-0.85, -1.25, 0.3]} transform distanceFactor={3.5}>
-            <div className="px-2.5 py-1 rounded-full glass-panel border border-purple-400/40 bg-surface/90 text-purple-300 text-[10px] font-mono whitespace-nowrap shadow-[0_0_15px_rgba(168,85,247,0.25)] flex items-center gap-1 select-none pointer-events-none">
-              <span>⚡ 6+ Years Exp</span>
+            <div className="px-2.5 py-1 rounded-full glass-panel border border-white/10 bg-surface/90 text-slate-300 text-[10px] font-mono whitespace-nowrap shadow-sm flex items-center gap-1 select-none pointer-events-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>6+ Years Exp</span>
             </div>
           </Html>
         </>
@@ -163,13 +164,13 @@ function HologramCore() {
       <mesh ref={meshRef} scale={1.8}>
         <icosahedronGeometry args={[1, 1]} />
         <MeshDistortMaterial
-          color="#00f5d4"
+          color="#ee4405"
           attach="material"
           distort={0.4}
           speed={2}
           roughness={0.2}
           metalness={0.8}
-          emissive="#004d40"
+          emissive="#450f00"
           emissiveIntensity={0.4}
         />
       </mesh>
@@ -223,9 +224,9 @@ export const HeroScene: React.FC = () => {
       >
         <ambientLight intensity={1.3} />
         <directionalLight position={[5, 8, 5]} intensity={2.4} color="#ffffff" />
-        <pointLight position={[-4, 3, 2]} intensity={2.5} color="#00f5d4" />
-        <pointLight position={[4, -2, 2]} intensity={2} color="#38bdf8" />
-        <spotLight position={[0, 6, 3]} angle={0.6} penumbra={1} intensity={2} color="#a855f7" />
+        <pointLight position={[-4, 3, 2]} intensity={2.5} color="#ee4405" />
+        <pointLight position={[4, -2, 2]} intensity={2} color="#fbbf24" />
+        <spotLight position={[0, 6, 3]} angle={0.6} penumbra={1} intensity={2} color="#ee4405" />
 
         <Suspense fallback={<HologramCore />}>
           <PhotoHologram mousePos={mousePos} isMobile={isMobile} />
@@ -252,7 +253,7 @@ export const HeroScene: React.FC = () => {
 
       {/* Floating 3D Badge Indicator */}
       <div className="absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 px-2.5 sm:px-3 py-1 rounded-full glass-panel border border-white/10 text-[9px] sm:text-[11px] font-mono text-slate-300 flex items-center gap-1.5 sm:gap-2 pointer-events-none whitespace-nowrap z-20">
-        <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-accent animate-pulse shrink-0" />
+        <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-[#ee4405] animate-pulse shrink-0" />
         <span className="hidden xs:inline">3D Spatial Viewport • </span>
         <span>Interactive Tilt</span>
       </div>
