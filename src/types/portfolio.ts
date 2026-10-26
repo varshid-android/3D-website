@@ -23,6 +23,10 @@ export interface ProjectItem {
   badge?: string;
   demoUrl?: string;
   githubUrl?: string;
+  externalLinks?: {
+    label: string;
+    url: string;
+  }[];
 }
 
 export interface SkillCategory {
@@ -36,6 +40,12 @@ export interface SkillCategory {
   }[];
 }
 
+export interface AwardImage {
+  url: string;
+  caption: string;
+  label: string;
+}
+
 export interface AwardItem {
   id: string;
   title: string;
@@ -44,6 +54,11 @@ export interface AwardItem {
   description: string;
   badgeText: string;
   iconName: string;
+  project?: string;
+  link?: string;
+  linkLabel?: string;
+  images?: AwardImage[];
+  highlights?: string[];
 }
 
 export interface EducationItem {

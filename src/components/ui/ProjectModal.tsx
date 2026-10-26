@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, CheckCircle2, Award } from 'lucide-react';
+import { X, CheckCircle2, Award, ExternalLink } from 'lucide-react';
 import { ProjectItem } from '../../types/portfolio';
 
 interface ProjectModalProps {
@@ -24,7 +24,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
@@ -119,6 +119,29 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             ))}
           </div>
         </div>
+
+        {/* Live Packages & Resources */}
+        {project.externalLinks && project.externalLinks.length > 0 && (
+          <div className="space-y-2 pt-4 border-t border-white/10">
+            <h4 className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
+              Live Packages &amp; Resources
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {project.externalLinks.map((link, idx) => (
+                <a
+                  key={idx}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-200 bg-white/5 border border-white/10 hover:border-accent/40 hover:text-accent hover:bg-white/10 transition-all"
+                >
+                  <span>{link.label}</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-accent" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Footer Close Action */}
         <div className="mt-6 sm:mt-8 pt-4 border-t border-white/10 flex justify-end">

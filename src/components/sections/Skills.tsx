@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Smartphone, Code2, Server, Workflow, Cpu, Check, Sparkles } from 'lucide-react';
+import { Smartphone, Code2, Server, Workflow, Cpu, Check, Sparkles, Cloud } from 'lucide-react';
 import { SKILL_CATEGORIES } from '../../data/portfolioData';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -25,6 +25,8 @@ export const Skills: React.FC = () => {
         return <Workflow className="w-5 h-5 text-purple-400" />;
       case 'Cpu':
         return <Cpu className="w-5 h-5 text-pink-400" />;
+      case 'Cloud':
+        return <Cloud className="w-5 h-5 text-amber-400" />;
       default:
         return <Sparkles className="w-5 h-5 text-accent" />;
     }

@@ -1,8 +1,8 @@
 import React, { useRef, Suspense, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, Float, MeshDistortMaterial, ContactShadows, OrbitControls, Image as DreiImage, Sparkles, Html } from '@react-three/drei';
+import { Float, MeshDistortMaterial, ContactShadows, OrbitControls, Image as DreiImage, Sparkles, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { User, Bot, Sparkles as SparklesIcon } from 'lucide-react';
+import { Sparkles as SparklesIcon } from 'lucide-react';
 
 // 3D Spatial Hologram with Varshid's Real Photo
 function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: number }; isMobile: boolean }) {
@@ -148,71 +148,6 @@ function PhotoHologram({ mousePos, isMobile }: { mousePos: { x: number; y: numbe
   );
 }
 
-// 3D Avatar Model with Mouse-Look Tracking
-function ModelAvatar({ mousePos, isMobile }: { mousePos: { x: number; y: number }; isMobile: boolean }) {
-  const gltf = useGLTF('/models/character.glb');
-  const groupRef = useRef<THREE.Group>(null);
-  const headBoneRef = useRef<THREE.Bone | null>(null);
-
-  useEffect(() => {
-    if (!gltf.scene) return;
-    
-    gltf.scene.traverse((child: any) => {
-      if (child.isBone && (child.name.toLowerCase().includes('head') || child.name.toLowerCase().includes('neck'))) {
-        headBoneRef.current = child;
-      }
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-        if (child.material) {
-          child.material.roughness = Math.max(0.4, child.material.roughness || 0.5);
-        }
-      }
-    });
-  }, [gltf]);
-
-  useFrame((_, delta) => {
-    if (!groupRef.current) return;
-
-    const targetY = (mousePos.x * Math.PI) / 8;
-    const targetX = -(mousePos.y * Math.PI) / 16;
-    
-    groupRef.current.rotation.y = THREE.MathUtils.damp(
-      groupRef.current.rotation.y,
-      targetY,
-      3,
-      delta
-    );
-    groupRef.current.rotation.x = THREE.MathUtils.damp(
-      groupRef.current.rotation.x,
-      targetX,
-      3,
-      delta
-    );
-
-    if (headBoneRef.current) {
-      headBoneRef.current.rotation.y = THREE.MathUtils.damp(
-        headBoneRef.current.rotation.y,
-        (mousePos.x * Math.PI) / 6,
-        4,
-        delta
-      );
-      headBoneRef.current.rotation.x = THREE.MathUtils.damp(
-        headBoneRef.current.rotation.x,
-        (-mousePos.y * Math.PI) / 8,
-        4,
-        delta
-      );
-    }
-  });
-
-  return (
-    <group ref={groupRef} position={[0, isMobile ? -1.65 : -1.9, 0]} scale={isMobile ? 1.4 : 1.85}>
-      <primitive object={gltf.scene} />
-    </group>
-  );
-}
-
 // Holographic geometric fallback
 function HologramCore() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -244,7 +179,6 @@ function HologramCore() {
 
 export const HeroScene: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [viewMode, setViewMode] = useState<'photo' | 'avatar'>('photo');
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -281,33 +215,6 @@ export const HeroScene: React.FC = () => {
       {/* Ambient background glow behind 3D object */}
       <div className="absolute inset-0 bg-gradient-radial from-accent/15 via-transparent to-transparent blur-2xl pointer-events-none overflow-hidden" />
 
-      {/* Mode Switcher Pill in Top Right */}
-      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 flex items-center gap-1 p-0.5 sm:p-1 rounded-full glass-panel border border-white/15 bg-black/70 shadow-lg">
-        <button
-          onClick={() => setViewMode('photo')}
-          className={`flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-medium transition-all ${
-            viewMode === 'photo'
-              ? 'bg-accent text-slate-950 font-bold shadow-[0_0_10px_rgba(0,245,212,0.4)]'
-              : 'text-slate-300 hover:text-white hover:bg-white/5'
-          }`}
-        >
-          <User className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-          <span>3D Photo</span>
-        </button>
-
-        <button
-          onClick={() => setViewMode('avatar')}
-          className={`flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-medium transition-all ${
-            viewMode === 'avatar'
-              ? 'bg-accent text-slate-950 font-bold shadow-[0_0_10px_rgba(0,245,212,0.4)]'
-              : 'text-slate-300 hover:text-white hover:bg-white/5'
-          }`}
-        >
-          <Bot className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-          <span>3D Rig</span>
-        </button>
-      </div>
-
       <Canvas
         camera={{ position: [0, 0, isMobile ? 4.6 : 4.4], fov: 45 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
@@ -321,11 +228,7 @@ export const HeroScene: React.FC = () => {
         <spotLight position={[0, 6, 3]} angle={0.6} penumbra={1} intensity={2} color="#a855f7" />
 
         <Suspense fallback={<HologramCore />}>
-          {viewMode === 'photo' ? (
-            <PhotoHologram mousePos={mousePos} isMobile={isMobile} />
-          ) : (
-            <ModelAvatar mousePos={mousePos} isMobile={isMobile} />
-          )}
+          <PhotoHologram mousePos={mousePos} isMobile={isMobile} />
         </Suspense>
 
         <ContactShadows
@@ -356,5 +259,3 @@ export const HeroScene: React.FC = () => {
     </div>
   );
 };
-
-useGLTF.preload('/models/character.glb');
