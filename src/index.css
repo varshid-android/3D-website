@@ -21,6 +21,11 @@
   html {
     scroll-behavior: smooth;
     color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden !important;
+    overflow-x: clip !important;
+    width: 100%;
+    max-width: 100%;
   }
 
   body {
@@ -29,7 +34,19 @@
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
+    overflow-x: clip !important;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+    overflow-x: clip !important;
+    position: relative;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -39,7 +56,8 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -53,6 +71,15 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Glassmorphism & Cyber Accents */
@@ -107,22 +134,261 @@
 
 /* Subtle Grid Background Pattern */
 .bg-grid-pattern {
-  background-size: 40px 40px;
+  background-size: 32px 32px;
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-/* Ambient Radial Glows */
+/* Ambient Radial Glows (clipped strictly within viewport) */
 .ambient-glow-top {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
   width: 100%;
-  max-width: 1200px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(0, 245, 212, 0.08) 0%, rgba(56, 189, 248, 0.04) 40%, transparent 70%);
+  max-width: 100%;
+  height: 500px;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 245, 212, 0.08) 0%, rgba(56, 189, 248, 0.04) 40%, transparent 70%);
   pointer-events: none;
+  overflow: hidden;
   z-index: 0;
+}
+
+/* ============================================================
+   SCROLL ANIMATION ENHANCEMENTS (Inspired by The Goonies Webflow)
+   ============================================================ */
+
+/* Smooth GPU-accelerated transforms for animated elements */
+[data-hero],
+[data-about],
+[data-exp],
+[data-skill],
+[data-project],
+[data-award],
+[data-contact],
+[data-footer],
+[data-animate] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Section divider gradient lines between sections */
+section + section::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 245, 212, 0.15) 20%,
+    rgba(56, 189, 248, 0.2) 50%,
+    rgba(168, 85, 247, 0.15) 80%,
+    transparent 100%
+  );
+  margin-bottom: 0;
+}
+
+/* Floating ambient particles effect via CSS (lightweight) */
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) scale(1.1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-10px) translateX(-5px) scale(0.95);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateY(-25px) translateX(15px) scale(1.05);
+    opacity: 0.35;
+  }
+}
+
+/* Cinematic vignette overlay for section transitions */
+@keyframes vignette-pulse {
+  0%, 100% {
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Smooth card hover lift with accent glow trail */
+.glass-panel {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease;
+}
+
+/* Enhanced hover states for glass panels with glow */
+.glass-panel:hover {
+  box-shadow: 0 8px 32px -8px rgba(0, 245, 212, 0.08),
+              0 0 0 1px rgba(0, 245, 212, 0.05);
+}
+
+/* Skill bar shimmer effect */
+@keyframes skill-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+[data-skill-bar] {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-skill-bar]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: skill-shimmer 3s ease-in-out infinite;
+  border-radius: inherit;
+}
+
+/* Accent underline animation for section headers */
+@keyframes accent-line-expand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  100% {
+    width: 60px;
+    opacity: 1;
+  }
+}
+
+/* Smooth page scroll with native momentum */
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Reduce motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  [data-hero],
+  [data-about],
+  [data-exp],
+  [data-skill],
+  [data-project],
+  [data-award],
+  [data-contact],
+  [data-footer],
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+    will-change: auto;
+  }
+}
+
+/* Navbar scroll progress indicator */
+@keyframes nav-glow {
+  0%, 100% {
+    box-shadow: 0 1px 10px rgba(0, 245, 212, 0.1);
+  }
+  50% {
+    box-shadow: 0 1px 20px rgba(0, 245, 212, 0.2);
+  }
+}
+
+/* Pulse ring animation for status indicators */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Stagger animation utility classes */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+
+/* Smooth parallax layer container */
+.parallax-container {
+  perspective: 1px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.parallax-layer-back {
+  transform: translateZ(-1px) scale(2);
+}
+
+.parallax-layer-front {
+  transform: translateZ(0);
+}
+
+/* Cinematic text shadow for headers */
+.text-shadow-cinematic {
+  text-shadow: 0 2px 20px rgba(0, 245, 212, 0.15),
+               0 4px 40px rgba(56, 189, 248, 0.1);
+}
+
+/* Gradient border animation */
+@keyframes gradient-border-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-border-animated {
+  background: linear-gradient(90deg, #00f5d4, #38bdf8, #a855f7, #00f5d4);
+  background-size: 300% 100%;
+  animation: gradient-border-rotate 4s ease infinite;
 }

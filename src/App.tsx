@@ -16,6 +16,11 @@ export const App: React.FC = () => {
     const sectionIds = ['home', 'about', 'experience', 'skills', 'projects', 'awards', 'contact'];
     
     const handleScroll = () => {
+      // Force lock horizontal scroll
+      if (window.scrollX !== 0) {
+        window.scrollTo(0, window.scrollY);
+      }
+
       const scrollPosition = window.scrollY + 250;
       for (const id of sectionIds) {
         const el = document.getElementById(id);
@@ -35,15 +40,17 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 selection:bg-accent/30 selection:text-white relative bg-grid-pattern">
-      {/* Top ambient radial glow */}
-      <div className="ambient-glow-top" />
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#07090e] text-slate-100 selection:bg-accent/30 selection:text-white relative bg-grid-pattern">
+      {/* Top ambient radial glow (clipped strictly within container) */}
+      <div className="absolute inset-x-0 top-0 h-[500px] overflow-hidden pointer-events-none z-0">
+        <div className="ambient-glow-top" />
+      </div>
 
       {/* Fixed Navigation */}
       <Navbar activeSection={activeSection} />
 
       {/* Main Content Sections */}
-      <main className="relative z-10">
+      <main className="relative z-10 w-full max-w-full overflow-x-hidden">
         <Hero />
         <About />
         <Experience />
