@@ -10,6 +10,7 @@ import { Awards } from './components/sections/Awards';
 import { Process } from './components/sections/Process';
 import { Contact } from './components/sections/Contact';
 import { LiveBackground } from './components/ui/LiveBackground';
+import { WhatsAppButton } from './components/ui/WhatsAppButton';
 import { useSmoothScroll } from './hooks/useScrollAnimations';
 
 export const App: React.FC = () => {
@@ -73,6 +74,9 @@ export const App: React.FC = () => {
 
       {/* Global Footer */}
       <Footer />
+
+      {/* Persistent Floating WhatsApp Direct Connect Button */}
+      <WhatsAppButton />
     </div>
   );
 };

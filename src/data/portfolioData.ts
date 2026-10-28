@@ -8,6 +8,8 @@ export const PERSONAL_INFO = {
   location: 'Ranip, Ahmedabad - 382480, Gujarat, India',
   email: 'shekhatvarshid5145@gmail.com',
   phone: '+91 80008 49533',
+  whatsapp: '+91 80008 49533',
+  whatsappUrl: 'https://wa.me/918000849533?text=Hi%20Varshid,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect!',
   linkedin: 'https://linkedin.com/in/varshid-shekhat-1853b2184',
   github: 'https://github.com/varshid-android',
   resumeUrl: '/Varshid_Shekhat_Resume.pdf',

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Mail, Phone, Linkedin, Github, ArrowUp, Heart } from 'lucide-react';
+import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 import { PERSONAL_INFO } from '../../data/portfolioData';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -146,6 +147,18 @@ export const Footer: React.FC = () => {
                   <Phone className="w-3.5 h-3.5" />
                 </div>
                 <span>{PERSONAL_INFO.phone}</span>
+              </a>
+
+              <a
+                href={PERSONAL_INFO.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-slate-400 hover:text-[#25D366] transition-colors group"
+              >
+                <div className="p-1.5 rounded-lg bg-white/5 border border-white/10 group-hover:border-[#25D366]/30 group-hover:bg-[#25D366]/10 shrink-0 transition-colors">
+                  <WhatsAppIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#25D366] transition-colors" />
+                </div>
+                <span>Chat on WhatsApp</span>
               </a>
 
               <a

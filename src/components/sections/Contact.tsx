@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, Phone, MapPin, Linkedin, Github, Send, Copy, Check, Download } from 'lucide-react';
+import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 import { PERSONAL_INFO } from '../../data/portfolioData';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -215,17 +216,31 @@ export const Contact: React.FC = () => {
                 </div>
               </div>
 
-              <button
-                onClick={() => handleCopy(PERSONAL_INFO.phone, 'phone')}
-                className="p-2.5 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white shrink-0 active:scale-95 transition-all"
-                aria-label="Copy Phone number"
-              >
-                {copiedField === 'phone' ? (
-                  <Check className="w-4 h-4 text-emerald-400" />
-                ) : (
-                  <Copy className="w-4 h-4" />
-                )}
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={PERSONAL_INFO.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-full bg-[#25D366]/10 border border-[#25D366]/30 text-[#25D366] hover:bg-[#25D366] hover:text-white shrink-0 active:scale-95 transition-all"
+                  aria-label="Direct message on WhatsApp"
+                  title="Chat on WhatsApp"
+                >
+                  <WhatsAppIcon className="w-4 h-4" />
+                </a>
+
+                <button
+                  onClick={() => handleCopy(PERSONAL_INFO.phone, 'phone')}
+                  className="p-2.5 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:text-white shrink-0 active:scale-95 transition-all"
+                  aria-label="Copy Phone number"
+                  title="Copy Phone number"
+                >
+                  {copiedField === 'phone' ? (
+                    <Check className="w-4 h-4 text-emerald-400" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Location & Social Links */}
@@ -242,12 +257,23 @@ export const Contact: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-white/10 flex items-center gap-2.5 sm:gap-3">
+              <div className="pt-3 border-t border-white/10 grid grid-cols-3 gap-2">
+                <a
+                  href={PERSONAL_INFO.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-full bg-[#25D366]/10 border border-[#25D366]/30 text-xs font-medium text-[#25D366] hover:bg-[#25D366] hover:text-white active:scale-95 transition-all group"
+                  title="Chat on WhatsApp"
+                >
+                  <WhatsAppIcon className="w-4 h-4 text-[#25D366] group-hover:text-white shrink-0 transition-colors" />
+                  <span>WhatsApp</span>
+                </a>
+
                 <a
                   href={PERSONAL_INFO.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
                 >
                   <Linkedin className="w-4 h-4 text-white shrink-0" />
                   <span>LinkedIn</span>
@@ -257,7 +283,7 @@ export const Contact: React.FC = () => {
                   href={PERSONAL_INFO.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
                 >
                   <Github className="w-4 h-4 text-white shrink-0" />
                   <span>GitHub</span>
