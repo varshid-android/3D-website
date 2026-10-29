@@ -64,6 +64,11 @@
     position: relative;
   }
 
+  /* Prevent third-party browser extensions (e.g. unstyled job trackers, scrapers, LinkedIn helpers) from injecting unwanted DOM nodes below the footer */
+  body > *:not(#root):not(script):not(style) {
+    display: none !important;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', sans-serif;
   }

@@ -11,6 +11,7 @@ import { Process } from './components/sections/Process';
 import { Contact } from './components/sections/Contact';
 import { LiveBackground } from './components/ui/LiveBackground';
 import { WhatsAppButton } from './components/ui/WhatsAppButton';
+import { ChatBot } from './components/ui/ChatBot/ChatBot';
 import { useSmoothScroll } from './hooks/useScrollAnimations';
 
 export const App: React.FC = () => {
@@ -77,6 +78,9 @@ export const App: React.FC = () => {
 
       {/* Persistent Floating WhatsApp Direct Connect Button */}
       <WhatsAppButton />
+
+      {/* RAG-Powered AI Portfolio Assistant */}
+      <ChatBot />
     </div>
   );
 };
