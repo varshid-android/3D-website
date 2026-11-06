@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight, Download } from 'lucide-react';
 import { PERSONAL_INFO } from '../../data/portfolioData';
+import { triggerSwarmRebuild } from '../ui/ArrowSwarm';
 
 interface NavbarProps {
   activeSection: string;
@@ -93,6 +94,20 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
           {/* Action CTAs (Desktop) */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => triggerSwarmRebuild({ tour: true })}
+              title="Watch multiplayer AI agent cursors rebuild the UI (Alt+Shift+S)"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-red-500/20 via-orange-500/20 to-amber-500/20 border border-orange-500/35 hover:border-orange-500 hover:bg-orange-500/30 shadow-sm transition-all duration-200 active:scale-95 group"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ee4405]"></span>
+              </span>
+              <span className="font-mono text-[11px] text-orange-200 group-hover:text-white transition-colors">✦ Rebuild UI</span>
+              <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-white/10 text-slate-400">⌥⇧S</span>
+            </button>
+
             <a
               href={PERSONAL_INFO.resumeUrl}
               target="_blank"
@@ -164,6 +179,24 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             </div>
 
             <div className="pt-4 mt-3 border-t border-white/10 flex flex-col gap-2.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  triggerSwarmRebuild({ tour: true });
+                }}
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-full text-xs font-semibold bg-gradient-to-r from-red-500/20 via-orange-500/20 to-amber-500/20 border border-orange-500/35 text-white active:scale-95"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ee4405]"></span>
+                  </span>
+                  <span>✦ Watch AI Rebuild UI</span>
+                </div>
+                <span className="text-[10px] font-mono text-orange-300">Tour 1x</span>
+              </button>
+
               <a
                 href={PERSONAL_INFO.resumeUrl}
                 target="_blank"

@@ -3,6 +3,7 @@ import { Download, ArrowUpRight, ArrowDown, MapPin, CheckCircle2, ShieldCheck, T
 import { PERSONAL_INFO, STATS } from '../../data/portfolioData';
 import { HeroScene } from '../three/HeroScene';
 import { useHeroAnimations } from '../../hooks/useScrollAnimations';
+import { triggerSwarmRebuild } from '../ui/ArrowSwarm';
 
 export const Hero: React.FC = () => {
   const heroRef = useHeroAnimations();
@@ -58,6 +59,20 @@ export const Hero: React.FC = () => {
                 <span>Let's Build Together</span>
                 <ArrowUpRight className="w-4 h-4 arrow-slide-diagonal animate-arrow-diagonal" />
               </a>
+
+              <button
+                type="button"
+                onClick={() => triggerSwarmRebuild({ tour: true })}
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full font-semibold text-xs sm:text-sm text-orange-300 bg-orange-500/10 border border-orange-500/30 hover:bg-orange-500/20 hover:border-orange-400 transition-all duration-200 active:scale-95 shadow-lg shadow-orange-500/5 group"
+                title="Watch multiplayer AI agents rebuild the UI (Alt+Shift+S)"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ee4405]"></span>
+                </span>
+                <span>Watch AI Rebuild UI</span>
+                <span className="text-[10px] font-mono opacity-60 hidden sm:inline px-1.5 py-0.5 rounded bg-white/10">⌥⇧S</span>
+              </button>
 
               <a
                 href="#projects"

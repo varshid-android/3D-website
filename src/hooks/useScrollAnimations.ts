@@ -30,9 +30,21 @@ export const useSmoothScroll = () => {
     });
 
     lenisRef.current = lenis;
+    (window as any).__lenisInstance = lenis;
 
     // Connect Lenis to ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
+
+    // Sync with Swarm Rebuild lifecycle
+    const onSwarmStart = () => {
+      lenis.stop();
+    };
+    const onSwarmEnd = () => {
+      lenis.start();
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('swarm:start', onSwarmStart);
+    window.addEventListener('swarm:end', onSwarmEnd);
 
     // Drive Lenis via GSAP ticker for synchronized 60/120fps frames
     const updateTicker = (time: number) => {
@@ -60,9 +72,12 @@ export const useSmoothScroll = () => {
 
     return () => {
       document.removeEventListener('click', handleAnchorClick);
+      window.removeEventListener('swarm:start', onSwarmStart);
+      window.removeEventListener('swarm:end', onSwarmEnd);
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
       lenisRef.current = null;
+      delete (window as any).__lenisInstance;
     };
   }, []);
 

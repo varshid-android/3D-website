@@ -12,6 +12,8 @@ import { Contact } from './components/sections/Contact';
 import { LiveBackground } from './components/ui/LiveBackground';
 import { WhatsAppButton } from './components/ui/WhatsAppButton';
 import { ChatBot } from './components/ui/ChatBot/ChatBot';
+import { ArrowSwarm } from './components/ui/ArrowSwarm';
+import { CursorArrowTrail } from './components/ui/CursorArrowTrail';
 import { useSmoothScroll } from './hooks/useScrollAnimations';
 
 export const App: React.FC = () => {
@@ -81,6 +83,12 @@ export const App: React.FC = () => {
 
       {/* RAG-Powered AI Portfolio Assistant */}
       <ChatBot />
+
+      {/* Cursor-Reactive Floating Particles Overlay */}
+      <ArrowSwarm />
+
+      {/* Multi-Arrow Cursor Trail Effect */}
+      <CursorArrowTrail />
     </div>
   );
 };
