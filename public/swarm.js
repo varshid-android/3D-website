@@ -30,15 +30,22 @@
     "#F24E1E", "#A259FF", "#1ABCFE", "#0ACF83", "#FF7262", "#FFC700",
     "#9747FF", "#E8467C", "#14AE5C", "#0D99FF", "#FF8A00", "#00B5CE",
   ];
+  const isMobile =
+    typeof window !== "undefined" &&
+    (window.innerWidth < 768 ||
+      (typeof window.orientation !== "undefined") ||
+      (navigator.maxTouchPoints && navigator.maxTouchPoints > 1 && window.innerWidth < 1024) ||
+      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+
   const BLUE = "#0D99FF";
   const RED = "#F24822";
-  const RULER = 20;
-  const MIN_AGENTS = 8;
-  const MAX_AGENTS = 48;
-  const FLOCK_AGENTS = 36;
-  const INTRO_AGENTS = 18;
-  const MAX_ITEMS = 4000;
-  const MAX_WORLD_H = 40000;
+  const RULER = isMobile ? 0 : 20;
+  const MIN_AGENTS = isMobile ? 3 : 8;
+  const MAX_AGENTS = isMobile ? 6 : 48;
+  const FLOCK_AGENTS = isMobile ? 5 : 36;
+  const INTRO_AGENTS = isMobile ? 3 : 18;
+  const MAX_ITEMS = isMobile ? 220 : 4000;
+  const MAX_WORLD_H = isMobile ? 12000 : 40000;
   const SVGNS = "http://www.w3.org/2000/svg";
 
   const rand = (a, b) => a + Math.random() * (b - a);
@@ -404,6 +411,7 @@
   // Pixels for things the DOM can't give back (WebGL canvases, playing video,
   // cross-origin iframes) come from a screenshot taken when the user clicked.
   function cropShot(shot, r) {
+    if (isMobile) return null;
     if (!shot || !shot.valid) return null;
     if (r.height > innerHeight * 3 || r.width > innerWidth * 2) return null;
     const vis = intersect(ltrb(r), { l: 0, t: 0, r: innerWidth, b: innerHeight });
@@ -438,6 +446,7 @@
   }
 
   function canvasPixels(el) {
+    if (isMobile) return null;
     try {
       const probe = document.createElement("canvas");
       probe.width = probe.height = 12;
@@ -531,6 +540,7 @@
         : b.x + b.w > 0 && b.x < innerWidth && b.y + b.h > 0 && b.y < innerHeight;
 
     function add(it) {
+      if (items.length >= MAX_ITEMS) return it;
       it.id = items.length;
       it.v = 1;
       it.rv = 0;
@@ -1480,11 +1490,11 @@
   const STYLE = `
 :host{all:initial}
 *{box-sizing:border-box}
-.bg{position:absolute;inset:0;opacity:0;transition:opacity .5s ease}
+.bg{position:absolute;inset:0;opacity:0;transition:opacity .5s ease;pointer-events:none}
 .bg.on{opacity:1}
 .layer,.port{position:absolute;overflow:hidden;pointer-events:none}
 .layer{inset:0}
-.world{position:absolute;left:0;top:0;will-change:transform}
+.world{position:absolute;left:0;top:0}
 .it{position:absolute;left:0;top:0;transform-origin:0 0}
 .it.settle{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
 .r{background-color:var(--ph,#D9D9D9);transition:background-color .22s ease,border-radius .22s ease}
@@ -1544,6 +1554,22 @@
 .hud button.snd.off{color:#8a8a8a}
 .hud button.snd.tap{background:#0D99FF;animation:hudpulse 1.6s ease-in-out infinite}
 @keyframes hudpulse{50%{box-shadow:0 0 0 4px rgba(13,153,255,.28)}}
+@media (max-width: 768px) {
+  .hud {
+    bottom: 12px;
+    padding: 4px 8px;
+    gap: 5px;
+    font-size: 10px;
+    max-width: calc(100vw - 16px);
+    border-radius: 16px;
+  }
+  .hud .dots { display: none !important; }
+  .hud .bar { width: 32px; }
+  .hud button { padding: 4px 7px; font-size: 10px; border-radius: 6px; }
+  .rulers, .ruler { display: none !important; }
+  .cursor svg { transform-origin: top left; }
+  .c-name { font-size: 8px; padding: 1px 4px; }
+}
 `;
 
   // -------------------------------------------------------------------- env
@@ -1555,18 +1581,21 @@
     if (se.scrollHeight <= innerHeight + 4) {
       let best = null;
       let bestArea = 0;
-      const all = document.body ? document.body.getElementsByTagName("*") : [];
-      for (let i = 0; i < all.length && i < 20000; i++) {
+      const all = document.body ? document.body.children : [];
+      const maxScan = isMobile ? 60 : 300;
+      for (let i = 0; i < all.length && i < maxScan; i++) {
         const el = all[i];
         if (el.scrollHeight <= el.clientHeight + 40 || el.clientHeight < innerHeight * 0.4) continue;
-        const oy = getComputedStyle(el).overflowY;
-        if (!/(auto|scroll|overlay)/.test(oy)) continue;
-        const r = el.getBoundingClientRect();
-        const area = r.width * r.height;
-        if (area > bestArea && r.width > innerWidth * 0.35) {
-          best = el;
-          bestArea = area;
-        }
+        try {
+          const oy = getComputedStyle(el).overflowY;
+          if (!/(auto|scroll|overlay)/.test(oy)) continue;
+          const r = el.getBoundingClientRect();
+          const area = r.width * r.height;
+          if (area > bestArea && r.width > innerWidth * 0.35) {
+            best = el;
+            bestArea = area;
+          }
+        } catch (_) {}
       }
       if (best) {
         scroller = best;
@@ -1624,7 +1653,7 @@
       for (const old of document.querySelectorAll("swarm-rebuild")) old.remove();
       const host = document.createElement("swarm-rebuild");
       host.style.cssText =
-        "all:initial !important;position:fixed !important;inset:0 !important;z-index:2147483647 !important;display:block !important;pointer-events:auto !important;contain:strict !important;opacity:1;transition:opacity .6s ease;";
+        "all:initial !important;position:fixed !important;inset:0 !important;z-index:2147483647 !important;display:block !important;pointer-events:auto !important;opacity:1;transition:opacity .6s ease;";
       env.host = host;
       this.host = host;
       const root = host.attachShadow({ mode: "open" });
@@ -1669,6 +1698,7 @@
       this._ovS = "";
       this._ovB = "";
       this._rulersOn = false;
+      if (isMobile && this.rulers) this.rulers.style.display = "none";
 
       const pb = env.pageBg;
       this.bg.style.backgroundColor = pb.color;
@@ -2021,6 +2051,14 @@
     }
 
     renderRulers(E) {
+      if (isMobile) {
+        if (this._rulersOn) {
+          this.rulers.innerHTML = "";
+          this._rulersOn = false;
+        }
+        if (this.rulers && this.rulers.style.display !== "none") this.rulers.style.display = "none";
+        return;
+      }
       const t = E.rulers.t;
       if (t <= 0.001) {
         if (this._rulersOn) {
@@ -2307,10 +2345,14 @@
       const avail = this.started ? this.available() : [];
       this.tempo = clamp(2.1 + this.vel / 900 + (avail.length / Math.max(1, this.cursors.length)) * 0.5, 2.1, 4.5) * this.speed;
 
-      if (this.rulers.want > 0) this.rulers.lastNeed = this.time;
-      const rt = this.time - this.rulers.lastNeed < 0.7 ? 1 : 0;
-      this.rulers.t += (rt - this.rulers.t) * Math.min(1, dt * 10);
-      if (Math.abs(rt - this.rulers.t) < 0.002) this.rulers.t = rt;
+      if (!isMobile) {
+        if (this.rulers.want > 0) this.rulers.lastNeed = this.time;
+        const rt = this.time - this.rulers.lastNeed < 0.7 ? 1 : 0;
+        this.rulers.t += (rt - this.rulers.t) * Math.min(1, dt * 10);
+        if (Math.abs(rt - this.rulers.t) < 0.002) this.rulers.t = rt;
+      } else {
+        this.rulers.t = 0;
+      }
 
       for (const g of this.guides) {
         if (!g.vis) continue;
@@ -2395,7 +2437,7 @@
           }
           if (!c.gen) c.gen = this.idle(c);
         }
-        if (c.gen.next(dt).done) {
+        if (c.gen && c.gen.next(dt).done) {
           if (c.task) {
             c.task.state = "done";
             c.task.doneAt = this.time;
@@ -3083,44 +3125,61 @@
       if (this.ctx) return true;
       try {
         const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return false;
         this.ctx = offline || new Ctx({ latencyHint: "interactive" });
       } catch (_) {
         return false;
       }
       const ctx = this.ctx;
-      const out = ctx.createGain();
-      out.gain.value = this.on ? 1 : 0;
-      const comp = ctx.createDynamicsCompressor();
-      comp.threshold.value = -18;
-      comp.knee.value = 14;
-      comp.ratio.value = 5;
-      comp.attack.value = 0.003;
-      comp.release.value = 0.3;
-      const master = ctx.createGain();
-      master.gain.value = 0.9;
-      master.connect(comp);
-      comp.connect(out);
-      out.connect(ctx.destination);
-      const verb = ctx.createConvolver();
-      verb.buffer = this.impulse(3.2, 2.4);
-      const wet = ctx.createGain();
-      wet.gain.value = 0.5;
-      verb.connect(wet);
-      wet.connect(master);
-      this.out = out;
-      this.master = master;
-      this.verb = verb;
-      this.noiseBuf = this.noise(1.5);
-      this.t0 = this.now();
-      return true;
+      if (!ctx) return false;
+      try {
+        const out = ctx.createGain();
+        out.gain.value = this.on ? 1 : 0;
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -18;
+        comp.knee.value = 14;
+        comp.ratio.value = 5;
+        comp.attack.value = 0.003;
+        comp.release.value = 0.3;
+        const master = ctx.createGain();
+        master.gain.value = 0.9;
+        master.connect(comp);
+        comp.connect(out);
+        out.connect(ctx.destination);
+
+        let verb = null;
+        if (!isMobile) {
+          try {
+            verb = ctx.createConvolver();
+            verb.buffer = this.impulse(2.4, 2.0);
+            const wet = ctx.createGain();
+            wet.gain.value = 0.4;
+            verb.connect(wet);
+            wet.connect(master);
+          } catch (_) {
+            verb = null;
+          }
+        }
+        this.out = out;
+        this.master = master;
+        this.verb = verb;
+        this.noiseBuf = this.noise(isMobile ? 0.5 : 1.2);
+        this.t0 = this.now();
+        return true;
+      } catch (err) {
+        console.warn("[swarm-rebuild] Audio init fallback:", err);
+        return false;
+      }
     }
 
     now() {
-      return this.fakeNow != null ? this.fakeNow : this.ctx.currentTime;
+      if (this.fakeNow != null) return this.fakeNow;
+      return this.ctx ? this.ctx.currentTime : performance.now() / 1000;
     }
 
     // Generated room: decaying stereo noise, darkened as it rings out.
     impulse(secs, decay) {
+      if (!this.ctx) return null;
       const sr = this.ctx.sampleRate;
       const n = Math.floor(sr * secs);
       const b = this.ctx.createBuffer(2, n, sr);
@@ -3138,6 +3197,7 @@
     }
 
     noise(secs) {
+      if (!this.ctx) return null;
       const sr = this.ctx.sampleRate;
       const b = this.ctx.createBuffer(1, Math.floor(sr * secs), sr);
       const d = b.getChannelData(0);
@@ -3147,15 +3207,19 @@
 
     setOn(on) {
       this.on = soundPref = on;
-      if (!this.ctx) return;
-      const t = this.ctx.currentTime;
-      this.out.gain.cancelScheduledValues(t);
-      this.out.gain.setTargetAtTime(on ? 1 : 0, t, 0.05);
-      if (on) this.resume();
+      if (!this.ctx || !this.out) return;
+      try {
+        const t = this.ctx.currentTime;
+        this.out.gain.cancelScheduledValues(t);
+        this.out.gain.setTargetAtTime(on ? 1 : 0, t, 0.05);
+        if (on) this.resume();
+      } catch (_) {}
     }
 
     resume() {
-      if (this.ctx && this.ctx.state === "suspended" && this.ctx.resume) this.ctx.resume().catch(() => {});
+      if (this.ctx && this.ctx.state === "suspended" && this.ctx.resume) {
+        this.ctx.resume().catch(() => {});
+      }
     }
 
     get blocked() {
@@ -3183,38 +3247,55 @@
     }
 
     bus(when, pan, send) {
-      const g = this.ctx.createGain();
-      const p = this.ctx.createStereoPanner();
-      p.pan.setValueAtTime(pan, when);
-      g.connect(p);
-      p.connect(this.master);
-      if (send) {
-        const s = this.ctx.createGain();
-        s.gain.value = send;
-        p.connect(s);
-        s.connect(this.verb);
+      if (!this.ctx || !this.master) return null;
+      try {
+        const g = this.ctx.createGain();
+        let target = g;
+        if (typeof this.ctx.createStereoPanner === "function") {
+          try {
+            const p = this.ctx.createStereoPanner();
+            p.pan.setValueAtTime(pan, when);
+            g.connect(p);
+            target = p;
+          } catch (_) {}
+        }
+        target.connect(this.master);
+        if (send && this.verb) {
+          try {
+            const s = this.ctx.createGain();
+            s.gain.value = send;
+            target.connect(s);
+            s.connect(this.verb);
+          } catch (_) {}
+        }
+        return g;
+      } catch (_) {
+        return null;
       }
-      return g;
     }
 
     // Glass piano: a few sine partials (one inharmonic, for the glass) with a
     // soft felt-hammer tick, long exponential ring.
     piano(midi, when, vel, pan, ring = 2.4) {
+      if (!this.ready() || !this.ctx) return;
       const now = this.now();
       this.ends = this.ends.filter((e) => e > now);
-      if (this.ends.length >= 28) return;
+      if (this.ends.length >= (isMobile ? 12 : 28)) return;
       const ctx = this.ctx;
       const f = mtof(midi);
       const v = this.bus(when, pan, 0.85);
+      if (!v) return;
       v.gain.value = 0.3 * vel;
       const hi = f > 900;
-      const parts = [
-        [1, 1, 1],
-        [2, 0.38, 0.55],
-        [3, 0.12, 0.32],
-        [2.756, 0.16, 0.42],
-        [5.4, 0.05, 0.16],
-      ];
+      const parts = isMobile
+        ? [[1, 1, 1], [2, 0.38, 0.55]]
+        : [
+            [1, 1, 1],
+            [2, 0.38, 0.55],
+            [3, 0.12, 0.32],
+            [2.756, 0.16, 0.42],
+            [5.4, 0.05, 0.16],
+          ];
       let last = null;
       for (const [r, a, d] of parts) {
         if (f * r > 15000) continue;
@@ -3238,6 +3319,7 @@
     }
 
     hammer(when, dest, f, amt) {
+      if (!dest || !this.ctx || !this.noiseBuf) return;
       const ctx = this.ctx;
       const src = ctx.createBufferSource();
       src.buffer = this.noiseBuf;
@@ -3258,6 +3340,7 @@
 
     // short filtered-noise ticks: typing and clicks
     tick(when, pan, freq, q, vel, len) {
+      if (!this.ready() || !this.ctx || !this.noiseBuf) return;
       const ctx = this.ctx;
       const src = ctx.createBufferSource();
       src.buffer = this.noiseBuf;
@@ -3266,6 +3349,7 @@
       bp.frequency.value = freq;
       bp.Q.value = q;
       const g = this.bus(when, pan, 0.06);
+      if (!g) return;
       g.gain.setValueAtTime(0, when);
       g.gain.linearRampToValueAtTime(vel, when + 0.0008);
       g.gain.exponentialRampToValueAtTime(0.0004, when + len);
@@ -3364,7 +3448,7 @@
     // the page dissolving: an airy swell over a low open fifth
     intro() {
       this.log("intro", []);
-      if (!this.ready()) return;
+      if (!this.ready() || !this.ctx || !this.noiseBuf) return;
       const ctx = this.ctx;
       const t = this.now() + 0.02;
       const src = ctx.createBufferSource();
@@ -3377,6 +3461,7 @@
       bp.frequency.exponentialRampToValueAtTime(2400, t + 0.9);
       bp.frequency.exponentialRampToValueAtTime(900, t + 1.8);
       const g = this.bus(t, 0, 0.6);
+      if (!g) return;
       g.gain.setValueAtTime(0, t);
       g.gain.linearRampToValueAtTime(0.16, t + 0.7);
       g.gain.exponentialRampToValueAtTime(0.0005, t + 2.2);
@@ -3389,8 +3474,10 @@
     }
 
     pad(midi, when, vel, len) {
+      if (!this.ready() || !this.ctx) return;
       const ctx = this.ctx;
       const g = this.bus(when, 0, 0.9);
+      if (!g) return;
       g.gain.setValueAtTime(0, when);
       g.gain.linearRampToValueAtTime(vel, when + len * 0.4);
       g.gain.exponentialRampToValueAtTime(0.0005, when + len);
@@ -3419,15 +3506,17 @@
       this.log("finale", []);
       if (!this.ready()) return;
       const { when } = this.grid(2);
-      const chord = [E2, E2 + 7, E2 + 12, E2 + 16, E2 + 19, E2 + 26, E2 + 28, E2 + 31, E2 + 36, E2 + 43];
-      chord.forEach((m, i) => this.piano(m, when + i * 0.035, 0.34 - i * 0.015, -0.6 + (i / chord.length) * 1.2, 5.5));
-      this.pad(E2 + 12, when, 0.05, 5);
+      const chord = isMobile
+        ? [E2, E2 + 12, E2 + 19, E2 + 28]
+        : [E2, E2 + 7, E2 + 12, E2 + 16, E2 + 19, E2 + 26, E2 + 28, E2 + 31, E2 + 36, E2 + 43];
+      chord.forEach((m, i) => this.piano(m, when + i * 0.035, 0.34 - i * 0.015, -0.6 + (i / chord.length) * 1.2, 4.5));
+      this.pad(E2 + 12, when, 0.05, 4);
     }
 
     // back to the real page: a falling sweep
     release() {
       this.log("release", []);
-      if (!this.ready()) return;
+      if (!this.ready() || !this.ctx || !this.noiseBuf) return;
       const ctx = this.ctx;
       const t = this.now() + 0.01;
       const src = ctx.createBufferSource();
@@ -3439,6 +3528,7 @@
       bp.frequency.setValueAtTime(3000, t);
       bp.frequency.exponentialRampToValueAtTime(220, t + 1);
       const g = this.bus(t, 0, 0.5);
+      if (!g) return;
       g.gain.setValueAtTime(0.12, t);
       g.gain.exponentialRampToValueAtTime(0.0005, t + 1.1);
       src.connect(bp);
@@ -3548,6 +3638,11 @@
     }
 
     async scan() {
+      if (isMobile) {
+        // Skip 28-step programmatic scroll storm on mobile to prevent GPU / WebKit Jetsam kill
+        await sleep(60);
+        return;
+      }
       const env = this.env;
       const g = env.geom();
       const H = env.scrollHeight();
@@ -3578,6 +3673,31 @@
       on(window, "resize", () => this.view.measure());
       on(window, "wheel", () => {
         if (this.engine.ready) this.engine.start();
+      }, { passive: true });
+      on(window, "touchmove", (e) => {
+        if (e.touches && e.touches[0]) {
+          this.engine.mouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+      }, { passive: true });
+      let touchStartY = 0;
+      on(this.view.host, "touchstart", (e) => {
+        if (this.engine.ready) this.engine.start();
+        if (e.touches && e.touches[0]) {
+          touchStartY = e.touches[0].clientY;
+          this.engine.mouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+        this.unlockSound();
+      }, { passive: true });
+      on(this.view.host, "touchmove", (e) => {
+        if (e.touches && e.touches[0]) {
+          const cy = e.touches[0].clientY;
+          const dy = touchStartY - cy;
+          touchStartY = cy;
+          this.engine.mouse = { x: e.touches[0].clientX, y: cy };
+          if (Math.abs(dy) > 0.5) {
+            this.env.scrollBy(dy);
+          }
+        }
       }, { passive: true });
       on(window, "pointermove", (e) => {
         this.engine.mouse = { x: e.clientX, y: e.clientY };
@@ -3678,7 +3798,9 @@
       }
       const crew = Math.max(MIN_AGENTS, E.cursors.filter((c) => !c.leaving).length);
       const backlog = E.backlog();
-      const target = backlog <= Math.max(4, crew * 0.6) ? 230 : backlog <= crew * 1.5 ? 80 : 0;
+      const maxSpeed = isMobile ? 120 : 230;
+      const midSpeed = isMobile ? 50 : 80;
+      const target = backlog <= Math.max(4, crew * 0.6) ? maxSpeed : backlog <= crew * 1.5 ? midSpeed : 0;
       this.tourV += (target - this.tourV) * Math.min(1, dt * 2.5);
       this.tourAcc += this.tourV * dt;
       if (this.tourAcc >= 1) {

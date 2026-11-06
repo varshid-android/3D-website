@@ -57,6 +57,11 @@ const FRICTION = 0.96;
  * Can be called programmatically from anywhere in the app (Navbar, Hero, shortcut, floating pill).
  */
 export const triggerSwarmRebuild = async (options: { tour?: boolean } = { tour: true }) => {
+  // Ensure body scroll is unlocked if a mobile drawer was open
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = '';
+  }
+
   // If already running, toggle
   if ((window as any).__swarmRebuild?.app) {
     (window as any).__swarmRebuild.toggle();
@@ -163,6 +168,12 @@ export const ArrowSwarm: React.FC = () => {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
+
+    // Skip ambient particle loop on touch screens or small mobile viewports
+    // to preserve GPU memory and battery for Three.js and swarm rebuild
+    const isTouchOnly = window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches;
+    const isSmallScreen = window.innerWidth < 768;
+    if (isTouchOnly || isSmallScreen) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
